@@ -22,6 +22,7 @@ const notFoundMiddleware = require('./middleware/notFound');
 // Import port from environment variables or use 5000 as default
 const port = process.env.PORT || 5000;
 
+
 // Add security middleware
 app.use(cors({
   origin: process.env.ALLOWED_ORIGIN.split(','), // Add your frontend URL

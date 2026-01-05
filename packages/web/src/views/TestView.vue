@@ -29,7 +29,9 @@ onMounted(async () => {
   const savedAnswers = localStorage.getItem('Answers')
   if (savedAnswers) {
     answers = JSON.parse(savedAnswers)
+    answeredQuestionsCount.value = answers.length
   }
+
   await loadQuestions()
 })
 
@@ -52,7 +54,7 @@ function handleAnswerChange(payload) {
       questionId: payload.questionId,
       value: payload.selectedValue,
     })
-    answeredQuestionsCount.value =answers.length
+    answeredQuestionsCount.value = answers.length
   }
   localStorage.setItem('Answers', JSON.stringify(answers))
 }
@@ -110,7 +112,7 @@ function previousPage() {
       :key="question._id"
       :question="question[questionField]"
       :number="index + 1"
-      :savedSelection="answers[index]?.value"
+      :savedSelection="answers.find((ans) => ans.questionId === question._id)?.value"
       :questionId="question._id"
       :class="{
         hiddenQuestion: !(
