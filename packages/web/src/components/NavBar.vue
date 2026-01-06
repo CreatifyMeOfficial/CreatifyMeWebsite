@@ -77,7 +77,7 @@ watch(
           }}</RouterLink>
         </div>
         <div class="profile-dropdown-item">
-          <RouterLink to="/" v-if="user" @click="((isProfileOpen = false), logout())">{{
+          <RouterLink to="/" v-if="user" class="without-hightlight" @click="((isProfileOpen = false), logout())">{{
             t('navbar.logout')
           }}</RouterLink>
           <RouterLink to="/signup" @click="isProfileOpen = false" v-else>{{
@@ -182,8 +182,8 @@ nav {
   font-size: 16px;
 }
 
-.router-link-active,
-.router-link-exact-active {
+.router-link-active:not(.without-hightlight),
+.router-link-exact-active:not(.without-hightlight) {
   color: var(--controls-color) !important;
 }
 

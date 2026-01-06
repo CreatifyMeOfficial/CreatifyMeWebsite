@@ -17,4 +17,7 @@ export default {
   async getResult() {
     return await apiCallWrapper(() => api.get('/questions/user-result'));
   },
+  async updateQuestion({ questionId = 0, questionEn, questionAr, MBTIAttribute, HollandAttribute }) {
+    return await apiCallWrapper(() => api.patch(`/questions/${questionId}`, { questionEn, questionAr, MBTIAttribute, HollandAttribute }));
+  }
 };

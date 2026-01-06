@@ -8,6 +8,14 @@ const page = ref(1)
 const isLoadingQuestion = ref(true)
 const { locale } = useI18n()
 
+const previousIcon = computed(() => {
+  return 'fa-solid fa-chevron-left'
+})
+
+const nextIcon = computed(() => {
+  return 'fa-solid fa-chevron-right'
+})
+
 const direction = computed(() => {
   return locale.value === 'ar' ? 'rtl' : 'ltr'
 })
@@ -38,23 +46,25 @@ onMounted(async () => {
       v-for="(question, index) in questions"
       :key="question._id"
       :questionId="question._id"
-      :questionAr="index + 1 + ' - ' + question.questionAr"
-      :questionEn="index + 1 + ' - ' + question.questionEn"
+      :questionNumber="index + 1"
+      :questionAr="question.questionAr"
+      :questionEn="question.questionEn"
       :hollandAttribute="question.HollandAttribute"
       :mbtiAttribute="question.MBTIAttribute"
       :class="{ hiddenQuestion: !(index >= (page - 1) * 4 && index < page * 4) }"
       @itemDeleted="handelItemDeletion"
+      @itemUpdated="loadQuestions"
     ></QuestionCard>
     <spinner v-show="isLoadingQuestion"></spinner>
     <div class="controls" v-show="!isLoadingQuestion" :dir="direction">
-      <button @click="page--" :class="{ disabled: page <= 1 }">
-        <i class="fa-solid fa-chevron-left"></i>
+      <button @click="page--" :class="{ disabled: page <= 1 }"  class="prev-btn">
+        <i :class="previousIcon"></i>
       </button>
       <span>
         {{ page }}
       </span>
-      <button @click="page++" :class="{ disabled: page >= questions.length / 4 }">
-        <i class="fa-solid fa-chevron-right"></i>
+      <button @click="page++" :class="{ disabled: page >= questions.length / 4 }" class="next-btn">
+        <i :class="nextIcon"></i>
       </button>
     </div>
   </div>
@@ -94,6 +104,31 @@ export default {
   display: flex;
   align-items: center;
   gap: 25px;
+  direction: ltr !important; /* إجبار الاتجاه من اليسار لليمين */
+}
+
+.prev-btn {
+  grid-area: prev;
+  justify-self: end;
+}
+
+.page-number {
+  grid-area: page;
+  font-weight: bold;
+  font-size: 16px;
+  min-width: 30px;
+  text-align: center;
+}
+
+.next-btn {
+  grid-area: next;
+  justify-self: start;
+}
+
+/* إزالة أي تأثير لاتجاه RTL */
+[dir="rtl"] .controls {
+  direction: ltr !important;
+  transform: none !important;
 }
 
 .question-container .controls span {
@@ -110,6 +145,11 @@ export default {
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
 }
 
 .question-container .controls button:hover {
@@ -122,12 +162,11 @@ export default {
   cursor: not-allowed;
 }
 
-[dir="rtl"] .fa-chevron-left,
-[dir="rtl"] .fa-chevron-right {
-  transform: scaleX(-1);
-}
-
 @media (max-width: 767px) {
+  .question-container .controls button {
+    width: 25px;
+    height: 25px
+  }
   .question-container {
     margin: auto;
   }

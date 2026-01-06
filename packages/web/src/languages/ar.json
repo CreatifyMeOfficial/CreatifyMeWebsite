@@ -173,6 +173,9 @@
   "adminPanel": {
     "question": "السؤال",
     "delete": "حذف",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "edit": "تعديل",
     "enterQuestion": "إضافة سؤال :",
     "enterEnQ": "أضف السؤال باللغة الإنجليزية :",
     "enterArQ": "أضف السؤال باللغة العربية :",

@@ -170,6 +170,9 @@
   "adminPanel": {
     "question": "Question",
     "delete": "Delete",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
     "enterQuestion": "Enter the question :",
     "enterEnQ": "Question in English :",
     "enterArQ": "Question in Arabic :",

@@ -1,7 +1,7 @@
 <script setup>
 import Comment from '@/components/commentCard.vue'
 import commentsApi from '@/api/comments'
-import { onMounted, ref, watch , computed } from 'vue'
+import { onMounted, ref, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { locale } = useI18n()
@@ -18,6 +18,15 @@ const commentsTotal = ref(0)
 const myCommentsOnly = ref(false)
 const commentCardRefs = ref([])
 const isLoadingComments = ref(true)
+
+// أضف computed للأيقونات
+const previousIcon = computed(() => {
+  return 'fa-solid fa-chevron-left'
+})
+
+const nextIcon = computed(() => {
+  return 'fa-solid fa-chevron-right'
+})
 
 async function loadComments() {
   try {
@@ -91,7 +100,6 @@ function previousPage() {
   page.value--
   scrollToTop()
 }
-
 </script>
 <template>
   <div class="comments-container">
@@ -123,28 +131,27 @@ function previousPage() {
       ref="commentCardRefs"
     />
     <div class="message" v-if="comments.length === 0 && !isLoadingComments">
-
-      <p class="message-attintion" v-if="!myCommentsOnly ">{{ t('comment.messageOne') }}</p>
-    <p class="message-attintion" v-if="myCommentsOnly">{{ t('comment.messageTwo') }}</p>
-
+      <p class="message-attintion" v-if="!myCommentsOnly">{{ t('comment.messageOne') }}</p>
+      <p class="message-attintion" v-if="myCommentsOnly">{{ t('comment.messageTwo') }}</p>
     </div>
     <div v-for="index in 10" :key="index" class="placeholder" v-if="isLoadingComments">
       <div class="right"></div>
       <div class="left"></div>
     </div>
-    <div class="controls" v-if="comments.length !== 0" :dir="direction">
-      <button :class="{ disabled: page <= 1 }" @click="previousPage">
-        <i class="fa-solid fa-chevron-left"></i>
+    <div class="controls" v-if="comments.length !== 0">
+      <button :class="{ disabled: page <= 1 }" @click="previousPage" class="prev-btn">
+        <i :class="previousIcon"></i>
       </button>
-      <span>
+      <span class="page-number">
         {{ page }}
       </span>
-      <button :class="{ disabled: page * commentsLimit >= commentsTotal }" @click="nextPage">
-        <i class="fa-solid fa-chevron-right"></i>
+      <button :class="{ disabled: page * commentsLimit >= commentsTotal }" @click="nextPage" class="next-btn">
+        <i :class="nextIcon"></i>
       </button>
     </div>
   </div>
 </template>
+
 <style scoped>
 .comments-container {
   width: 80%;
@@ -172,8 +179,6 @@ function previousPage() {
   column-gap: 10px;
 }
 
-
-
 .sort-controls .ownership-select input[type='checkbox'] {
   accent-color: var(--main-color);
   scale: 1.2;
@@ -190,7 +195,7 @@ function previousPage() {
   align-items: center;
   column-gap: 15px;
 }
-.sort-controls .sel select{
+.sort-controls .sel select {
   font-size: 16px;
 }
 
@@ -199,11 +204,11 @@ function previousPage() {
   font-size: 16px;
 }
 
-.comments-container .message{
+.comments-container .message {
   margin-top: 15%;
 }
 
-.comments-container .message-attintion{
+.comments-container .message-attintion {
   border: 1px solid var(--main-color);
   padding: 15px 25px;
   border-radius: 20px;
@@ -231,6 +236,7 @@ function previousPage() {
   border-radius: 50%;
   background-color: var(--placeholder-background-content);
 }
+
 .left {
   margin: auto;
   width: 60%;
@@ -252,11 +258,37 @@ select:focus {
   outline: none;
 }
 
+/* التعديلات الرئيسية على عناصر التحكم */
 .controls {
   display: flex;
   align-items: center;
   gap: 25px;
   margin: auto;
+  direction: ltr !important; /* إجبار الاتجاه من اليسار لليمين */
+}
+
+.prev-btn {
+  grid-area: prev;
+  justify-self: end;
+}
+
+.page-number {
+  grid-area: page;
+  font-weight: bold;
+  font-size: 16px;
+  min-width: 30px;
+  text-align: center;
+}
+
+.next-btn {
+  grid-area: next;
+  justify-self: start;
+}
+
+/* إزالة أي تأثير لاتجاه RTL */
+[dir="rtl"] .controls {
+  direction: ltr !important;
+  transform: none !important;
 }
 
 .controls span {
@@ -273,6 +305,11 @@ select:focus {
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
 }
 
 .controls button.disabled {
@@ -281,46 +318,64 @@ select:focus {
   cursor: not-allowed;
 }
 
-.controls button:hover {
+.controls button:hover:not(.disabled) {
   scale: 1.02;
 }
 
+/* إزالة التعديلات القديمة على الأيقونات */
 [dir="rtl"] .fa-chevron-left,
 [dir="rtl"] .fa-chevron-right {
-  transform: scaleX(-1);
+  transform: none !important;
 }
 
+/* الحفاظ على التنسيق في الأجهزة المحمولة */
 @media (max-width: 767px) {
-
-  .sort-controls{
+  .sort-controls {
     flex-direction: column-reverse;
     gap: 10px;
   }
 
-  .sort-controls .sel{
+  .sort-controls .sel {
     gap: 10px;
   }
 
-  .sort-controls .ownership-select{
+  .sort-controls .ownership-select {
     gap: 5px;
   }
 
   .sort-controls .ownership-select input[type='checkbox'] {
-  scale: 1;
-}
-  .sort-controls .ownership-select label{
+    scale: 1;
+  }
+
+  .sort-controls .ownership-select label {
     font-size: 11px;
   }
 
-  .sort-controls .sel select{
+  .sort-controls .sel select {
     font-size: 11px;
   }
 
-  .sort-controls .sel span{
+  .sort-controls .sel span {
     font-size: 11px;
   }
 
-  .comments-container .message-attintion{
+  .comments-container .message-attintion {
+    font-size: 14px;
+  }
+
+  /* تحسين عرض عناصر التحكم في الجوال */
+  .controls {
+    width: 160px;
+    gap: 15px;
+  }
+
+  .controls button {
+    width: 25px;
+    height: 25px;
+    font-size: 16px;
+  }
+
+  .page-number {
     font-size: 14px;
   }
 }

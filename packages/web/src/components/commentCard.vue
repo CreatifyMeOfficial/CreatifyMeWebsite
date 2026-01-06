@@ -1,8 +1,8 @@
 <template>
   <div class="comment" @click="$emit('cardSelected', $el)">
     <div class="user">
+      <p class="name">{{ userName }}</p>
       <img class="image" :src="userImage" alt="" />
-      <p class="name">{{ Username }}</p>
     </div>
 
     <div class="com" ref="content">
@@ -123,6 +123,7 @@ export default {
 
 .comment .user {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 110px;
@@ -133,7 +134,9 @@ export default {
   border-radius: 50%;
 }
 .comment .user .name {
+  text-align: center;
   font-size: 12px;
+  margin: 5px auto;
   font-weight: bold;
 }
 .comment .com {
@@ -212,6 +215,11 @@ button i {
 @media (max-width: 767px) {
   .comment .user {
     width: 75px;
+  }
+  .comment .user .name {
+  font-size: 10px;
+  font-weight: 500;
+
   }
   .comment .controls {
     width: 25px;

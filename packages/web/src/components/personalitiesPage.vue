@@ -150,6 +150,9 @@ function previousPage() {
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
+  width: 30px;
+  height: 30px;
+
 }
 
 .controls button.disabled {
@@ -168,6 +171,11 @@ function previousPage() {
 }
 
 @media (max-width: 767px) {
+  .controls button {
+  width: 25px;
+  height: 25px;
+  }
+
   .container {
     width: 90%;
   }

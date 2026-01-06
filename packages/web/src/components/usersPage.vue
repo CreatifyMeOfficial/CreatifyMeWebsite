@@ -14,6 +14,14 @@ const totalUsers = ref(0)
 const userCardRefs = ref([])
 const isLoadingUsers = ref(true)
 
+const previousIcon = computed(() => {
+  return 'fa-solid fa-chevron-left'
+})
+
+const nextIcon = computed(() => {
+  return 'fa-solid fa-chevron-right'
+})
+
 const direction = computed(() => {
   return locale.value === 'ar' ? 'rtl' : 'ltr'
 })
@@ -95,14 +103,14 @@ function previousPage() {
     ></UserCard>
     <spinner v-show="isLoadingUsers"></spinner>
     <div class="controls" v-show="!isLoadingUsers" :dir="direction">
-      <button :class="{ disabled: page <= 1 }" @click="previousPage">
-        <i class="fa-solid fa-chevron-left"></i>
+      <button :class="{ disabled: page <= 1 }" @click="previousPage" class="prev-btn">
+        <i :class="previousIcon"></i>
       </button>
       <span>
         {{ page }}
       </span>
-      <button :class="{ disabled: page * usersLimit >= totalUsers }" @click="nextPage">
-        <i class="fa-solid fa-chevron-right"></i>
+      <button :class="{ disabled: page * usersLimit >= totalUsers }" @click="nextPage" class="next-btn">
+        <i :class="nextIcon"></i>
       </button>
     </div>
   </div>
@@ -124,6 +132,31 @@ function previousPage() {
   display: flex;
   align-items: center;
   gap: 25px;
+  direction: ltr !important; /* إجبار الاتجاه من اليسار لليمين */
+}
+
+.prev-btn {
+  grid-area: prev;
+  justify-self: end;
+}
+
+.page-number {
+  grid-area: page;
+  font-weight: bold;
+  font-size: 16px;
+  min-width: 30px;
+  text-align: center;
+}
+
+.next-btn {
+  grid-area: next;
+  justify-self: start;
+}
+
+/* إزالة أي تأثير لاتجاه RTL */
+[dir="rtl"] .controls {
+  direction: ltr !important;
+  transform: none !important;
 }
 
 .users-container .controls span {
@@ -140,6 +173,11 @@ function previousPage() {
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
 }
 
 .users-container .controls button.disabled {
@@ -152,12 +190,17 @@ function previousPage() {
   scale: 1.02;
 }
 
-[dir='rtl'] .fa-chevron-left,
-[dir='rtl'] .fa-chevron-right {
-  transform: scaleX(-1);
+[dir="rtl"] .fa-chevron-left,
+[dir="rtl"] .fa-chevron-right {
+  transform: none !important;
 }
 
+
 @media (max-width: 767px) {
+  .users-container .controls button {
+    width: 25px;
+    height: 25px;
+  }
   .users-container {
     padding: 25px;
     margin: auto;

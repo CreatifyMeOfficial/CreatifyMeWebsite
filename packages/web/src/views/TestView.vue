@@ -6,6 +6,7 @@ import testResultDisplay from '@/components/testResultDisplay.vue'
 import createNotification from '@/notification/notification.js'
 import notificationTypes from '@/enums/notificationTypes.js'
 import press from '@/components/progressBar.vue'
+import isLoggedIn from '@/helperMethods/checkLoginState'
 import customButtonComponent from '@/components/customButtonComponent.vue'
 import { useI18n } from 'vue-i18n'
 
@@ -17,6 +18,8 @@ const displayResult = ref(false)
 const resultDisplay = ref('')
 const isLoadingTest = ref(true)
 let answers = []
+
+
 
 // computed property للحصول على الحقل المناسب بناءً على اللغة
 const questionField = computed(() => {
@@ -30,6 +33,9 @@ onMounted(async () => {
   if (savedAnswers) {
     answers = JSON.parse(savedAnswers)
     answeredQuestionsCount.value = answers.length
+  }
+  if(!isLoggedIn()){
+    createNotification(t('notifications.loginRequired'), notificationTypes.Warning, 5)
   }
 
   await loadQuestions()
@@ -139,7 +145,7 @@ function previousPage() {
       <div class="up"></div>
       <div class="down"></div>
     </div>
-    <div class="controls">
+    <div class="controls" >
       <customButtonComponent
         v-if="page > 1"
         @click="previousPage"
@@ -204,7 +210,7 @@ function previousPage() {
 .controls {
   display: flex;
   justify-content: center;
-  direction: ltr;
+  direction: var(--direction);
 }
 
 .controls button {

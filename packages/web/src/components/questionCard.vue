@@ -4,18 +4,48 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 </script>
 <template>
-  <div class="question-card">
-    <span class="column-header">{{ t('adminPanel.question') }}</span>
+  <div class="question-card" >
+    <span class="column-header">{{ t('adminPanel.question') + ` ( ${questionNumber} )` }}</span>
     <span class="column-header">MBTI</span>
     <span class="column-header">Holland</span>
-    <span class="column-header">{{ t('adminPanel.delete') }}</span>
+    <span v-show="!editStarted" class="column-header">{{ t('adminPanel.edit') }}</span>
+    <span v-show="editStarted" class="column-header">{{ t('adminPanel.save') }}</span>
+    <span v-show="!editStarted" class="column-header">{{ t('adminPanel.delete') }}</span>
+    <span v-show="editStarted" class="column-header">{{ t('adminPanel.cancel') }}</span>
     <div class="question">
-      <span class="question-content en">{{ questionEn }}</span>
-      <span class="question-content ar">{{ questionAr }}</span>
+      <span ref="enContent" class="question-content en">{{ questionEn }}</span>
+      <span ref="arContent" class="question-content ar">{{ questionAr }}</span>
     </div>
-    <span class="attribute">{{ mbtiAttribute }}</span>
-    <span class="attribute">{{ hollandAttribute }}</span>
-    <button @click="Delete"><i class="fa-solid fa-trash"></i></button>
+    <span v-show="!editStarted" class="attribute">{{ mbtiAttribute }}</span>
+    <select v-show="editStarted" v-model="mbtiAttr" name="MBTISelect" ref="MBTISelect">
+      <option value="J">J</option>
+      <option value="P">P</option>
+      <option value="T">T</option>
+      <option value="F">F</option>
+      <option value="N">N</option>
+      <option value="S">S</option>
+      <option value="E">E</option>
+      <option value="I">I</option>
+    </select>
+    <span v-show="!editStarted" class="attribute">{{ hollandAttribute }}</span>
+    <select v-show="editStarted" v-model="hollandAttr" name="HollandSelect" ref="HollandSelect">
+      <option value="RR">R</option>
+      <option value="II">I</option>
+      <option value="AA">A</option>
+      <option value="SS">S</option>
+      <option value="EE">E</option>
+      <option value="CC">C</option>
+    
+    </select>
+    <button v-show="!editStarted" class="edit" @click="editStarted = true"><i class="fa-solid fa-pen"></i></button>
+    <button v-show="editStarted" class="update" @click="updateQuestion">
+          <i class="fa-solid fa-floppy-disk"></i>
+        </button>
+    <button v-show="!editStarted" @click="Delete"><i class="fa-solid fa-trash"></i></button>
+    <button v-show="editStarted" class="cancel" @click="editStarted = false">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
   </div>
 </template>
 
@@ -27,7 +57,12 @@ import createNotification from '@/notification/notification'
 export default {
   name: 'QuestionCard',
   data() {
-    return {}
+    return {
+      editStarted: false,
+      hollandAttr: this.hollandAttribute,
+      mbtiAttr: this.mbtiAttribute,
+
+    }
   },
   props: {
     questionId: {
@@ -38,6 +73,9 @@ export default {
     },
     hollandAttribute: {
       type: String,
+    },
+    questionNumber: {
+      type: Number,
     },
     questionAr: {
       type: String,
@@ -52,10 +90,54 @@ export default {
         const response = await questionsApi.deleteQuestion({ questionId: this.questionId })
         if (response.status === 200) {
           createNotification('Question deleted successfully!', notificationTypes.Success, 5)
-          this.$emit('itemDeleted', () => {})
+          this.$emit('itemDeleted')
         }
       } catch {
         return
+      }
+    },
+
+    async updateQuestion(){
+      try{
+        const response = await questionsApi.updateQuestion({
+          questionId:this.questionId,
+          questionEn:this.$refs.enContent.innerText,
+          questionAr:this.$refs.arContent.innerText,
+          HollandAttribute:this.$refs.HollandSelect.value,
+          MBTIAttribute:this.$refs.MBTISelect.value,
+        })
+
+        if(response.status === 200){
+          createNotification('Question was updated successfully!', notificationTypes.Success, 5)
+          this.$emit("itemUpdated")
+        }
+        
+      }
+      catch{
+        return
+      }
+
+      finally{
+        this.editStarted= false
+      }
+    }
+
+
+
+  },
+
+
+  watch: {
+    editStarted(newVal) {
+      this.$refs.enContent.contentEditable = newVal
+      this.$refs.arContent.contentEditable = newVal
+      if (newVal === false) {
+        this.$refs.enContent.innerText = this.questionEn
+        this.$refs.arContent.innerText = this.questionAr
+        this.hollandAttr = this.hollandAttribute
+        this.mbtiAttr = this.mbtiAttribute
+      } else {
+        this.$refs.enContent.focus()
       }
     },
   },
@@ -65,7 +147,7 @@ export default {
 <style scoped>
 .question-card {
   display: grid;
-  grid-template-columns: 1fr repeat(3, auto);
+  grid-template-columns: 1fr repeat(4, auto);
   grid-template-rows: auto auto;
   gap: 10px 25px;
   border: 1px solid var(--text-color);

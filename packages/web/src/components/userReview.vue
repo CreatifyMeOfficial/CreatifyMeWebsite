@@ -79,6 +79,8 @@ export default {
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  word-break: break-word;
+  white-space: pre-wrap;
 }
 
 @media (max-width: 1199px) {
