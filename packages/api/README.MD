@@ -32,15 +32,16 @@ JWT_EXPIRATION=1d               # e.g. 1d, 12h
 COOKIE_AGE=604800000            # cookie max age in ms
 
 # Cloudinary (used for profile images)
-CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
-CLOUDINARY_API_KEY=your_cloudinary_api_key
-CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+CLOUD_NAME=your_cloudinary_cloud_name
+API_KEY=your_cloudinary_api_key
+API_SECRET=your_cloudinary_api_secret
+CLOUDINARY_FOLDER_NAME=users_images
 
 # CORS
 ALLOWED_ORIGIN=http://localhost:5173
 ```
 
-If you have multiple frontends, you can provide a comma‑separated list in `ALLOWED_ORIGIN`, for example:
+If you have multiple frontends, provide a comma‑separated list (no spaces) in `ALLOWED_ORIGIN`, for example:
 
 ```
 ALLOWED_ORIGIN=http://localhost:5173,https://creatifyme.com
