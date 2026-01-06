@@ -2,9 +2,9 @@ const cloudinary = require('cloudinary').v2;
 
 // Configure Cloudinary with the credentials
 cloudinary.config({
-  cloud_name: 'dho2irge7',
-  api_key: '145346988183651',
-  api_secret: 'LgtirdPSWOPm8bgKMMDKnoyybyc'
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET
 });
 
 
@@ -18,7 +18,7 @@ const uploadImage = async (path, name) => {
   // Use Cloudinary's moderation add-on to check image content
   const result = await cloudinary.uploader.upload(path, {
     public_id: name,
-    folder: 'users_images',
+    folder: process.env.CLOUDINARY_FOLDER_NAME,
     // moderation: 'aws_rek' // AWS Rekognition for content moderation
   });
 
