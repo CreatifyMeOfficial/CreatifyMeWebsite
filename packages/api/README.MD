@@ -32,9 +32,9 @@ JWT_EXPIRATION=1d               # e.g. 1d, 12h
 COOKIE_AGE=604800000            # cookie max age in ms
 
 # Cloudinary (used for profile images)
-CLOUD_NAME=your_cloudinary_cloud_name
-API_KEY=your_cloudinary_api_key
-API_SECRET=your_cloudinary_api_secret
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 CLOUDINARY_FOLDER_NAME=users_images
 
 # CORS
