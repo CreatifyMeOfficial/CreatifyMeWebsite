@@ -14,7 +14,7 @@ const canResend = ref(false)
 const router = useRouter();
 
 onMounted(async() => {
-  await resendCode();
+  await sendCode();
 })
 
 const submitCode = async () => {
@@ -34,11 +34,11 @@ const submitCode = async () => {
 }
 
 
-const resendCode = async () => {
+const sendCode = async () => {
   try{
     canResend.value = false;
-    const response = await authApi.resendVerificationEmail();
     EnableResend();
+    const response = await authApi.resendVerificationEmail();
   }catch{
     return
   }
@@ -61,10 +61,10 @@ function EnableResend(){
             :content="t('verifyEmail.verify')"
             @click="submitCode">
         </customButtonComponent>
-    <p v-show="canResend" class="resend-code">
-        {{ t("verifyEmail.resend1") }} <button v-show="canResend" class="resend" @click="resendCode">{{t("verifyEmail.click")  }}</button> {{ t("verifyEmail.resend2") }}
+    <p v-if="canResend" class="resend-code">
+        {{ t("verifyEmail.resend1") }} <button v-if="canResend" class="resend" @click="sendCode">{{t("verifyEmail.click")  }}</button> {{ t("verifyEmail.resend2") }}
     </p>
-    <p v-show="!canResend" class="resend-code">
+    <p v-if="!canResend" class="resend-code">
         {{ t("verifyEmail.waitMessage") }}
     </p>
 </div>

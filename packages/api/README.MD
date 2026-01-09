@@ -41,12 +41,9 @@ CLOUDINARY_FOLDER_NAME=users_images
 # CORS
 ALLOWED_ORIGIN=http://localhost:5173
 
-# Email (used for verification emails)
-EMAIL_HOST=your_smtp_host                    # e.g. smtp.gmail.com
-EMAIL_PORT=587                                # or 465 for SSL
-EMAIL_USER=your_email@example.com
-EMAIL_PASS=your_email_password
-EMAIL_FROM=CreatifyMe <noreply@creatifymeweb.com>
+# Email (used for verification emails via Brevo)
+BREVO_API_KEY=your_brevo_api_key             # Get from https://app.brevo.com
+EMAIL_FROM=your_verified_email@example.com   # Must be a verified sender email in Brevo
 ```
 
 If you have multiple frontends, provide a comma‑separated list (no spaces) in `ALLOWED_ORIGIN`, for example:
