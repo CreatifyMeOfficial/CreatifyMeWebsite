@@ -5,8 +5,9 @@ Express + MongoDB backend that powers authentication, profile management, commen
 ## Features
 
 - Auth with username/email login, secure registration, logout, password change
+- **Email verification** with 6-digit codes, expiration, and attempt limits
 - Cookie-based JWT session, role-based authorization (user, admin, super_admin)
-- Profile image upload (Multer + Cloudinary)
+- Profile image upload (Multer + Cloudinary) — requires verified email
 - Comment CRUD with profanity filtering and pagination
 - Personality test questions (MBTI + Holland), result calculation and storage
 - Admin endpoints for user management and comment moderation
@@ -39,6 +40,13 @@ CLOUDINARY_FOLDER_NAME=users_images
 
 # CORS
 ALLOWED_ORIGIN=http://localhost:5173
+
+# Email (used for verification emails)
+EMAIL_HOST=your_smtp_host                    # e.g. smtp.gmail.com
+EMAIL_PORT=587                                # or 465 for SSL
+EMAIL_USER=your_email@example.com
+EMAIL_PASS=your_email_password
+EMAIL_FROM=CreatifyMe <noreply@creatifymeweb.com>
 ```
 
 If you have multiple frontends, provide a comma‑separated list (no spaces) in `ALLOWED_ORIGIN`, for example:
@@ -64,11 +72,19 @@ The server logs `Server is listening on port: <port>` after connecting to Mongo.
 - `POST /api/v1/user/signup` — Register with `userName, firstName, lastName, phone, countryKey, email, password, confirmPassword, birthDate`
 - `POST /api/v1/user/login` — Login with `emailOrUsername, password`
 - `POST /api/v1/user/logout` — Clears auth cookies
-- `POST /api/v1/user/upload-image` — Upload profile image (multipart `file`); auth required
+- `POST /api/v1/user/send-verification-email` — Send verification code email; auth required, rate limited (1 req/min)
+- `POST /api/v1/user/verify-email` — Verify email with `verificationCode` (6-digit); auth required
+- `POST /api/v1/user/upload-image` — Upload profile image (multipart `file`); auth + verified email required
 - `GET /api/v1/user/get-user` — Get current user; auth required
-- `PATCH /api/v1/user/update-user` — Update profile (`userName, firstName, lastName, phone, countryKey, birthDate`); auth required
+- `PATCH /api/v1/user/update-user` — Update profile (`userName, firstName, lastName, phone, countryKey, birthDate`); auth + verified email required
 - `PATCH /api/v1/user/change-password` — Change password with `oldPassword, newPassword, confirmPassword`; auth required
 - `DELETE /api/v1/user/delete-user` — Delete account and resources; auth required
+
+**Email Verification:**
+- Verification codes are 6-digit numbers, expire after 10 minutes
+- Users have 5 verification attempts before needing to resend
+- Some endpoints require verified email (upload-image, update-user)
+- Verification codes are sent via HTML email template
 
 Password policy: 10-50 chars, upper/lower/number/symbol, no spaces. Profanity filtering runs on user and comment inputs.
 

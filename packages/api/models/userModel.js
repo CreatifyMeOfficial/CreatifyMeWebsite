@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const validatePassword = require('../helperMethods/passwordValidator');
 const { BadRequestError } = require('../errors/');
 const userRoles = require('../enums/userRoles');
+const crypto = require('crypto');
 
 
 const userSchema = new mongoose.Schema({
@@ -74,6 +75,20 @@ const userSchema = new mongoose.Schema({
       },
       message: 'You must be at least 15 years old to create an account'
     }
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
+  verificationCode: {
+    type: String,
+  },
+  verificationCodeExpireDate: {
+    type: Date,
+  },
+  verificationAttempts: {
+    type: Number,
+    default: 5,
   }
 });
 
@@ -116,6 +131,14 @@ userSchema.methods.GenerateJWTToken = async function () {
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRATION }
   );
+};
+
+userSchema.methods.GenerateVerificationCode = function () {
+  const verificationCode = crypto.randomInt(100000, 999999).toString();
+  this.verificationCode = verificationCode;
+  this.verificationCodeExpireDate = Date.now() + 600000;
+  this.verificationAttempts = 5;
+  return verificationCode;
 };
 
 module.exports = mongoose.model('User', userSchema);

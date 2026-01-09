@@ -108,6 +108,7 @@ function previousPage() {
   <div class="questions">
     <!-- Progress Bar -->
     <press
+      v-if="!isLoadingTest"
       :totalQuestions="questions.length"
       :answeredQuestions="answeredQuestionsCount"
       class="progress-section"

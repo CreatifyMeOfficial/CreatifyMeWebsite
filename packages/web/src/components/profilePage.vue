@@ -94,74 +94,109 @@ async function updateImage(formData) {
 onMounted(loadUser)
 </script>
 <template>
-  <div class="profile-container">
-    <div class="icon">
-      <img :src="userInfo.image" alt="" />
-      <input
-        type="file"
-        style="display: none"
-        ref="fileInput"
-        v-on:change="handleFileChange"
-        accept="*.png,*.jpg"
-      />
-
-      <input type="file" style="display: none" ref="fileInput" v-on:change="handleFileChange" />
-      <button @click="fileInput.click()">
-        <i class="fa-solid fa-pen-to-square"></i>
-      </button>
+  <div class="profile">
+    <div v-if="!userStore.user.isVerified" class="verification-warning">
+      <p>
+        {{ t('profile.verificationWarning') }}
+      </p>
+      <router-link to="/verifyEmail"> {{ t('profile.verificationLink') }}</router-link>
     </div>
-    <div class="border"></div>
-    <div class="info">
-      <span class="description"> {{ t('profile.title') }} </span>
-      <form @submit.prevent="updateUser">
-        <div class="inputs">
-          <label for="first">{{ t('profile.firstName') }}</label>
-          <input type="text" name="" id="first" v-model="userInfo.firstName" />
-        </div>
-        <div class="inputs">
-          <label for="last">{{ t('profile.lastName') }}</label>
-          <input type="text" name="" id="last" v-model="userInfo.lastName" />
-        </div>
-        <div class="inputs">
-          <label for="birth">{{ t('profile.birthday') }}</label>
-          <input type="date" name="" id="birth" v-model="formattedBirthDate" />
-        </div>
-        <div class="inputs">
-          <label for="">{{ t('profile.phoneNumber') }}</label>
-          <IntlTelInput
-            ref="phoneInput"
-            :options="{
-              strictMode: true,
-              nationalMode: true,
-            }"
-            v-model="phone"
-            type="tel"
-            name="phone"
-            required
-            @changeCountry="countryChanged"
-          />
-        </div>
-        <div class="buttons">
-          <customButtonComponent
-            class="cancel"
-            :buttonType="'button'"
-            :content="t('buttons.cancel')"
-            @click="loadUser"
-          ></customButtonComponent>
-          <customButtonComponent
-            class="save"
-            :buttonType="'submit'"
-            :content="t('buttons.save')"
-          ></customButtonComponent>
-        </div>
-      </form>
+    <div class="profile-container">
+      <div class="icon">
+        <img :src="userInfo.image" alt="" />
+        <input
+          type="file"
+          style="display: none"
+          ref="fileInput"
+          v-on:change="handleFileChange"
+          accept="*.png,*.jpg"
+        />
+
+        <input type="file" style="display: none" ref="fileInput" v-on:change="handleFileChange" />
+        <button @click="fileInput.click()">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+      </div>
+      <div class="border"></div>
+      <div class="info">
+        <span class="description"> {{ t('profile.title') }} </span>
+        <form @submit.prevent="updateUser">
+          <div class="inputs">
+            <label for="first">{{ t('profile.firstName') }}</label>
+            <input type="text" name="" id="first" v-model="userInfo.firstName" />
+          </div>
+          <div class="inputs">
+            <label for="last">{{ t('profile.lastName') }}</label>
+            <input type="text" name="" id="last" v-model="userInfo.lastName" />
+          </div>
+          <div class="inputs">
+            <label for="birth">{{ t('profile.birthday') }}</label>
+            <input type="date" name="" id="birth" v-model="formattedBirthDate" />
+          </div>
+          <div class="inputs">
+            <label for="">{{ t('profile.phoneNumber') }}</label>
+            <IntlTelInput
+              ref="phoneInput"
+              :options="{
+                strictMode: true,
+                nationalMode: true,
+              }"
+              v-model="phone"
+              type="tel"
+              name="phone"
+              required
+              @changeCountry="countryChanged"
+            />
+          </div>
+          <div class="buttons">
+            <customButtonComponent
+              class="cancel"
+              :buttonType="'button'"
+              :content="t('buttons.cancel')"
+              @click="loadUser"
+            ></customButtonComponent>
+            <customButtonComponent
+              class="save"
+              :buttonType="'submit'"
+              :content="t('buttons.save')"
+            ></customButtonComponent>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>
 <style scoped>
+.profile {
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+}
+
+.verification-warning {
+  background-color: var(--secondary-color);
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.verification-warning p {
+  margin: 0 5px;
+  color: var(--background-color);
+}
+
+.verification-warning a {
+  color: var(--background-color);
+  font-weight: 600;
+}
+
 .profile-container {
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
   align-items: center;
   width: 75%;
   margin: 0 auto;

@@ -9,6 +9,8 @@ const fs = require('fs').promises;
 const { filterWords } = require('../helperMethods/wordsFilter');
 const userRoles = require('../enums/userRoles');
 const { parsePhoneNumberWithError } = require('libphonenumber-js');
+const { sendEmail } = require('../helperMethods/mailer');
+const GetTemplate = require("../helperMethods/emailTemplate");
 
 
 const cookieConfig = {
@@ -117,6 +119,74 @@ const Logout = async (req, res) => {
   res.status(StatusCodes.OK).json({ status: 'Success' });
 };
 
+/**
+ * Verifies the email of the authenticated user
+ * @param {Request} req - Express request object containing the user's ID and the verification code
+ * @param {Response} res - Express response object used to send back the success status
+ * @throws {BadRequestError} When the verification code is invalid or has expired
+ */
+const VerifyEmail = async (req, res) => {
+  const { userId } = req.user;
+  const { verificationCode } = req.body;
+  if (!verificationCode) {
+    throw new BadRequestError('Please provide a verification code!');
+  }
+  const user = await userModel.findById(userId);
+  if (user.isVerified) {
+    throw new BadRequestError('This user is already verified!');
+  }
+  if (!user.verificationCodeExpireDate || !user.verificationCode) {
+    throw new BadRequestError('No verification code was found. Please resend the verification email and try again!');
+  }
+  if (new Date(user.verificationCodeExpireDate).getTime() < Date.now()) {
+    user.verificationCode = undefined;
+    user.verificationCodeExpireDate = undefined;
+    await user.save();
+    throw new BadRequestError('Verification code has expired!');
+  }
+  if (user.verificationAttempts <= 0) {
+    user.verificationCode = undefined;
+    user.verificationCodeExpireDate = undefined;
+    await user.save();
+    throw new BadRequestError('Too many attempts please resend the code and attempt to verify your account again!');
+  }
+  if (String(user.verificationCode) !== String(verificationCode)) {
+    user.verificationAttempts -= 1;
+    await user.save();
+    throw new BadRequestError('Invalid verification code!');
+  }
+  user.isVerified = true;
+  user.verificationCode = undefined;
+  user.verificationCodeExpireDate = undefined;
+  await user.save();
+  res.status(StatusCodes.OK).json({ status: 'Success' });
+};
+
+
+/**
+ * Sends the email verification code to the authenticated user
+ * @param {Request} req - Express request object containing the user's ID
+ * @param {Response} res - Express response object used to send back the success status
+ */
+const SendVerificationEmail = async (req, res) => {
+  const { userId } = req.user;
+  const user = await userModel.findById(userId);
+  if (user.isVerified) {
+    throw new BadRequestError('This user is already verified!');
+  }
+  const verificationCode = user.GenerateVerificationCode();
+  try {
+    await sendEmail(user.email, 'Verification Code For Creatify Me Account', GetTemplate(verificationCode));
+  } catch (error) {
+    user.verificationCode = undefined;
+    user.verificationCodeExpireDate = undefined;
+    await user.save();
+    throw new BadRequestError('Failed to send verification email. Please try again later.');
+  }
+  await user.save();
+  res.status(StatusCodes.OK).json({ status: 'Success' });
+};
+
 
 /**
  * Adds a user profile image to their account
@@ -152,7 +222,7 @@ const AddUserImage = async (req, res) => {
  * @throws {Error} When user retrieval fails
  */
 const GetUser = async (req, res) => {
-  const user = await userModel.findById(req.user.userId).select(['-password', '-__v']);
+  const user = await userModel.findById(req.user.userId).select(['-password', '-__v', '-verificationCode', '-verificationCodeExpireDate', '-verificationAttempts']);
   res.status(StatusCodes.OK).json({ user: user });
 };
 
@@ -249,4 +319,4 @@ const DeleteMyAccount = async (req, res) => {
 
 
 
-module.exports = { Register, Login, Logout, AddUserImage, GetUser, UpdateUser, DeleteMyAccount, ChangePassword };
+module.exports = { Register, Login, Logout, VerifyEmail, SendVerificationEmail, AddUserImage, GetUser, UpdateUser, DeleteMyAccount, ChangePassword };

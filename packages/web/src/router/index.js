@@ -9,6 +9,7 @@ import AdminPanel from '@/views/AdminPanelView.vue';
 import Comments from '../views/CommentsView.vue';
 import Result from '@/views/ResultView.vue';
 import ReportBug from '../views/BugRreportView.vue';
+import VerifyEmail from '../views/VerifyEmailView.vue'
 
 
 const router = createRouter({
@@ -24,6 +25,7 @@ const router = createRouter({
     { path: '/comments', component: Comments },
     { path: '/result', component: Result },
     { path: '/reportBug', component: ReportBug },
+    { path: '/verifyEmail', component: VerifyEmail},
 
   ],
   scrollBehavior(to, from, savedPosition) {

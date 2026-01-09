@@ -149,6 +149,8 @@
     }
   },
   "profile": {
+    "verificationWarning": "Your account is not verified yet. Please verify your account to be able to use our platform.",
+    "verificationLink": " Verify your account here",
     "title": "Update your info:",
     "firstName": "First Name",
     "lastName": "Last Name",
@@ -186,5 +188,16 @@
       "addQuestion": "Add Question",
       "personality": "Personalities"
     }
+  },
+  "verifyEmail": {
+    "warningMessage": "Please enter a verification code",
+    "successMessage": "The account was verified successfully",
+    "title": "Verify your email address",
+    "description": "enter the code received on your email",
+    "resend1": "If you didn't receive a code",
+    "resend2": "to resend it",
+    "click": "click here",
+    "verify": "verify",
+    "waitMessage": "Wait for a minute to be able to resend the code again"
   }
 }

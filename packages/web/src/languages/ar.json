@@ -59,9 +59,9 @@
     "facebookLinkLabel": "تابعنا على فيسبوك:",
     "discordLinkLabel": "انضم لديسكورد:",
     "copyRight": "Creatify Me جميع حقوق النشر محفوظة لصالح",
-    "linkedInLinkLabel":"تابعنا على لنكيدإن:",
-    "instagramLinkLabel":"تابعنا على  انستغرام:",
-    "telegramLinkLabel":"انضم الينا على التيلغرام:",
+    "linkedInLinkLabel": "تابعنا على لنكيدإن:",
+    "instagramLinkLabel": "تابعنا على  انستغرام:",
+    "telegramLinkLabel": "انضم الينا على التيلغرام:",
     "tiktokLinkLabel": "تابعنا على  تيك توك:"
   },
   "sideBar": {
@@ -94,18 +94,15 @@
     "login": "تسجيل دخول"
   },
   "signup": {
-    
     "firstName": "الاسم الأول",
     "lastName": "الاسم الأخير",
     "userName": "اسم المستخدم",
     "email": "الإيميل",
-    
     "confirmPassword": "تأكيد كلمة السر",
     "phone": "رقم الهاتف",
     "date": "تاريخ الميلاد",
     "warn": "لدي حساب بالفعل!",
     "signupBtn": "إنشاء"
-    
   },
   "login": {
     "or": "الإيميل أو اسم المستخدم",
@@ -152,6 +149,8 @@
     }
   },
   "profile": {
+    "verificationWarning": "حسابك غير موثق. رجاء قم بتوثيق حسابك اولا حتى تستطيع استخدام منصتنا",
+    "verificationLink": "وثق حسابك هنا",
     "title": "حدث بياناتك",
     "firstName": "الأسم الأول",
     "lastName": "الأسم الأخير",
@@ -162,11 +161,11 @@
     "disagree": "لا اوافق",
     "agree": "اوافق"
   },
-  "comment":{
-    "cheackBoxLabel":"تعليقاتي فقط",
-    "sort":"ترتيب بحسب",
-    "newest":"الأحدث",
-    "oldest":"الأقدم",
+  "comment": {
+    "cheackBoxLabel": "تعليقاتي فقط",
+    "sort": "ترتيب بحسب",
+    "newest": "الأحدث",
+    "oldest": "الأقدم",
     "messageOne": "لا يوجد أي تعليقات حالياً كن أول من يقدم رأيه",
     "messageTwo": "لم تقم بالتعليق من قبل يسعدنا معرفة رأيك بنا"
   },
@@ -189,5 +188,16 @@
       "addQuestion": "إضافة سؤال",
       "personality": "الشخصيات"
     }
+  },
+  "verifyEmail": {
+    "warningMessage": "رجاء أدخل رمز التوثيق",
+    "successMessage": "تم التوثيق بنجاح",
+    "title": "توثيق حسابك",
+    "description": "أدخل الرمز المرسل إلى حسابك",
+    "resend1": "إذا لم يصلك الرمز",
+    "resend2": "لإرسالة مجددا",
+    "click": "إضغط هنا",
+    "verify": "توثيق",
+    "waitMessage": "إنتظر دقيقة حتى تتمكن من إرسال الرمز مجددا"
   }
 }

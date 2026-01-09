@@ -11,6 +11,12 @@ export default {
   async logout() {
     return await apiCallWrapper(() => api.post('/user/logout'));
   },
+  async verifyUser({ verificationCode }) {
+    return await apiCallWrapper(() => api.post('/user/verify-email', { verificationCode }));
+  },
+  async resendVerificationEmail() {
+    return await apiCallWrapper(() => api.post('/user/send-verification-email'));
+  },
   async getUser() {
     return await apiCallWrapper(() => api.get('/user/get-user'));
   },

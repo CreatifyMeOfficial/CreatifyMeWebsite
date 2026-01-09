@@ -57,7 +57,7 @@ const Register = async (e) => {
 
     if (response.status === 201) {
       userStore.fetchUser()
-      router.push('/')
+      router.push('/verifyEmail')
     }
   } catch {
     return
@@ -77,7 +77,7 @@ const Register = async (e) => {
       <div class="user-info">
         <!-- First Name input field -->
         <label for="">{{ t('signup.firstName') }}</label>
-        <input type="text" v-model="formData.firstName"  dir="ltr" required />
+        <input type="text" v-model="formData.firstName" dir="ltr" required />
 
         <!-- Last Name input field -->
         <label for="">{{ t('signup.lastName') }}</label>
@@ -92,11 +92,16 @@ const Register = async (e) => {
         <input type="email" v-model="formData.email" dir="ltr" required />
 
         <!-- Password field (hidden input) -->
-        <label for="" >{{ t('formData.password') }}</label>
-        <passwordInput class="pass" v-model="formData.password" dir="ltr" :required="true"></passwordInput>
+        <label for="">{{ t('formData.password') }}</label>
+        <passwordInput
+          class="pass"
+          v-model="formData.password"
+          dir="ltr"
+          :required="true"
+        ></passwordInput>
 
         <!-- Password confirmation field -->
-        <label for="" >{{ t('signup.confirmPassword') }} </label>
+        <label for="">{{ t('signup.confirmPassword') }} </label>
         <passwordInput
           class="pass"
           v-model="formData.confirmPassword"
@@ -105,7 +110,7 @@ const Register = async (e) => {
         ></passwordInput>
 
         <!-- Phone number field -->
-        <label for=""  >{{ t('signup.phone') }}</label>
+        <label for="">{{ t('signup.phone') }}</label>
         <!-- <input type="phone" v-model="formData.phone" id="phone" name="phone" required /> -->
         <IntlTelInput
           :options="{
