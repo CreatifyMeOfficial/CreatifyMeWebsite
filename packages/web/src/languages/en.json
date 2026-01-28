@@ -1,0 +1,249 @@
+{
+  "slogan": "Find your passion and make it work for you",
+  "projectGoal": " Our project aims to empower individuals of all ages and backgrounds to discover their true talents, develop them systematically and professionally, and ultimately transform them into sustainable sources of income.",
+  "ourBeliefs": "We believe that passion is not necessarily what someone is already skilled at, but rather what resonates deeply with their heart and soul—and it can be cultivated and nurtured. ",
+  "search": {
+    "placeholder": "Search"
+  },
+  "features": {
+    "testYourself": {
+      "title": "Test yourself :",
+      "description": "discover your talent through precise analysis."
+    },
+    "developSkills": {
+      "title": "Develop your skills:",
+      "description": "enroll in the right courses."
+    },
+    "ignitePassion": {
+      "title": "Ignite your passion:",
+      "description": "start your professional or creative journey."
+    }
+  },
+  "buttons": {
+    "startTest": "Start Test Now",
+    "comment": "Comment",
+    "cancel": "Cancel",
+    "save": "Save",
+    "change": "Change",
+    "delete": "Delete",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "create": "Create",
+    "ok":"ok"
+  },
+  "userReviews": {
+    "title": "What our users say about us",
+    "commentsLink": "<< Show More >>"
+  },
+  "comments": {
+    "title": "Leave Us Your Comment",
+    "placeholder": "Comment here"
+  },
+  "notifications": {
+    "loginRequired": "Please login first!",
+    "commentRequired": "Please enter a comment first!",
+    "validateComment": "The comment must be less than 300 characters.",
+    "validateTag": "The tag must be between 3 to 25 characters.",
+    "emptyQuestion": "Please fill all the fields and select a value for each test!",
+    "shortQuestion": "The question must be longer than 10 characters."
+  },
+  "navbar": {
+    "home": "Home",
+    "about": "About",
+    "test": "Test",
+    "adminPanel": "Admin",
+    "settings": "settings",
+    "result": "result",
+    "signup": "singup",
+    "logout": "logout"
+  },
+  "footer": {
+    "emailLinkLabel": "Reach us via Email:",
+    "whatsappLinkLabel": "Reach us via Whatsapp:",
+    "facebookLinkLabel": "Follow us on Facebook:",
+    "discordLinkLabel": "Join our Discord:",
+    "copyRight": "all right reserved for Creatify Me",
+    "linkedInLinkLabel": "Follow us on LinkedIn:",
+    "instagramLinkLabel": "Follow us on Instagram:",
+    "telegramLinkLabel": "Join us on Telegram:",
+    "tiktokLinkLabel": "Follow us on TikTok"
+  },
+  "sideBar": {
+    "setting": "settings",
+    "profile": "profile"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": {
+      "title": "Select Language:"
+    },
+    "notifications": {
+      "title": "Allow Notifications:",
+      "description": "Do you want to receive notification on emails"
+    },
+    "password": {
+      "title": "Change Password:",
+      "oldPassword": "Enter Old Password:",
+      "newPassword": "Enter New Password:",
+      "confirmPassword": "Confirm New Password:"
+    },
+    "account": {
+      "title": "Delete Account:",
+      "deleteWarning": "Are you sure you want to delete your account? This action is irreversible."
+    }
+  },
+  "formData": {
+    "signup": "Signup",
+    "password": "Password",
+    "login": "Login"
+  },
+  "signup": {
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "userName": "UserName",
+    "email": "Email",
+    "confirmPassword": "Confirm Password",
+    "phone": "Phone Number",
+    "date": "Date of Birth",
+    "warn": "Already have an account!",
+    "signupBtn": "Signup"
+  },
+  "login": {
+    "or": "Email or UserName",
+    "reminder": "If you forget Your password",
+    "click": "click here",
+    "create": "Create an account first"
+  },
+  "aboutUs": {
+    "welcome": "Welcome to",
+    "description": "Our expertly crafted personality assessment is designed to reveal your unique strengths, passions, and untapped potential—helping you navigate life with deeper self-awareness and confidence.",
+    "mission": {
+      "title": "Our Mission",
+      "description": "To become the leading Arabic platform for passion discovery and empowerment—helping individuals unlock their full potential for personal and professional growth.",
+      "subtitle": "We strive to create a transformative space where self-awareness meets opportunity, guiding Arabic-speaking individuals to:",
+      "discover": {
+        "title": "Discover",
+        "description": "their unique strengths and passions through precise, culturally tailored assessments."
+      },
+      "develop": {
+        "title": "Develop",
+        "description": "their skills with curated resources, expert insights, and actionable strategies."
+      },
+      "thrive": {
+        "title": "Thrive",
+        "description": "in careers and lives aligned with their true purpose."
+      }
+    },
+    "vision": {
+      "title": "Our Vision",
+      "description": "To provide an integrated ecosystem that simplifies the journey of self-discovery and empowers individuals to transform their talents into a productive, inspiring lifestyle.",
+      "subtitle": "We achieve this by offering:",
+      "personalizedPathways": {
+        "title": "Personalized Pathways:",
+        "description": "Tailored assessments and actionable insights to uncover your unique potential."
+      },
+      "holisticGrowth": {
+        "title": "Holistic Growth Tools:",
+        "description": "Resources and guidance to nurture skills, mindset, and opportunities."
+      },
+      "communityImpact": {
+        "title": "Community & Impact:",
+        "description": "A supportive space where passion meets purpose, fostering creativity and meaningful contributions."
+      }
+    }
+  },
+  "profile": {
+    "verificationWarning": "Your account is not verified yet. Please verify your account to be able to use our platform.",
+    "verificationLink": " Verify here",
+    "title": "Update your info:",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "birthday": "Birthday",
+    "phoneNumber": "Phone Number"
+  },
+  "test": {
+    "disagree": "Disagree",
+    "agree": "Agree"
+  },
+  "comment": {
+    "cheackBoxLabel": "My Comments Only",
+    "sort": "Sort By",
+    "newest": "newest",
+    "oldest": "oldest",
+    "messageOne": "There are no comments at the moment. Be the first to share your opinion",
+    "messageTwo": "You haven't commented before. We'd be happy to know your opinion of us"
+  },
+  "adminPanel": {
+    "question": "Question",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "enterQuestion": "Enter the question :",
+    "enterEnQ": "Question in English :",
+    "enterArQ": "Question in Arabic :",
+    "image": "Profile Image",
+    "userName": "User Name",
+    "addTag": "Add New Tag :",
+    "tagsTitle": "Tags",
+    "noAccess": {
+      "title": "Access denied",
+      "description": "You do not have permission to view the Administration page."
+    },
+    "sidebar": {
+      "users": "Users",
+      "questions": "Questions",
+      "addQuestion": "Add Question",
+      "personality": "Personalities"
+    }
+  },
+  "verifyEmail": {
+    "warningMessage": "Please enter a verification code",
+    "title": "Verify your email address",
+    "description": "enter the code received on your email",
+    "resend1": "If you didn't receive a code",
+    "resend2": "to resend it",
+    "click": "click here",
+    "verify": "verify",
+    "waitMessage": "Wait for a minute to be able to resend the code again"
+  },
+  "reset": {
+    "emailInputWarningMessage": "Please enter the email address of your account",
+    "emailInputSuccessMessage": "We've sent a code your way! Please check your email to continue resetting your password.",
+    "emailInputTitle": "Enter your email",
+    "emailInputDescription": "The reset password code will be sent to your email",
+    "warningMessage": "Please provide the reset code, new password and confirm password",
+    "title": "Reset Password",
+    "description": "The code has been sent to your email address. Enter the author's 6-digit code below.",
+    "change": "Change Password",
+    "add": "Add a new Password",
+    "confirm": "Confirm Password",
+    "resend": "Resend the code",
+    "save": "Change",
+    "send": "Send",
+    "passwordMismatch": "Passwords do not match",
+    "addPlaceholder": "Enter new password",
+    "confirmPlaceholder": "Confirm new password"
+  },
+  "validateUser":{
+    "passwordWarning":"Password must be 10-50 chars, include upper, lower, number, symbol, and no spaces.",
+    "confirmPasswordWarning": "Confirm password dosen't match the password.",
+    "firstNameWarning": "First name must be between (3 and 25) letters.",
+    "lastNameWarning": "Last name must be between (3 and 25) letters.",
+    "userNameWarning": "Username must be between (3 and 30) letters.",
+    "countryKeyWarning": "Please select a country key.",
+    "phoneNumberWarning": "This is not a valid phone number.",
+    "birthdayWarning": "To create an account you must be 15 years old at least."
+  },
+  "testResult":{
+    "title":" your test result is:  "
+  },
+  "warningMassage":{
+    "forSure":" Are you sure ?",
+    "deleteComment": "This comment will be deleted.",
+    "deleteAccount" : "Your account will be deleted.",
+    "deleteUser":"This user will be deleted.",
+    "deleteTag": "This tag will be deleted."
+  }
+}
