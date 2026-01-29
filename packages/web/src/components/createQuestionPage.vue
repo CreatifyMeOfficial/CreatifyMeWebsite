@@ -1,18 +1,18 @@
 <script setup>
-import questionsApi from '@/api/questions'
-import notificationTypes from '@/enums/notificationTypes'
-import createNotification from '@/notification/notification'
-import customButtonComponent from './customButtonComponent.vue'
-import { useI18n } from 'vue-i18n'
+import questionsApi from '@/api/questions';
+import notificationTypes from '@/enums/notificationTypes';
+import createNotification from '@/notification/notification';
+import customButtonComponent from './customButtonComponent.vue';
+import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n()
+const { t } = useI18n();
 
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const englishQuestion = ref('')
-const arabicQuestion = ref('')
-const selectedMbti = ref('')
-const selectedHolland = ref('')
+const englishQuestion = ref('');
+const arabicQuestion = ref('');
+const selectedMbti = ref('');
+const selectedHolland = ref('');
 
 async function createQuestion() {
   if (
@@ -25,13 +25,13 @@ async function createQuestion() {
       t('notifications.emptyQuestion'),
       notificationTypes.Warning,
       5,
-    )
-    return
+    );
+    return;
   }
 
-  if (englishQuestion.value.length < 10 || arabicQuestion.value.length < 10){
-    createNotification(t('notifications.shortQuestion'), notificationTypes.Warning, 5,)
-    return
+  if (englishQuestion.value.length < 10 || arabicQuestion.value.length < 10) {
+    createNotification(t('notifications.shortQuestion'), notificationTypes.Warning, 5,);
+    return;
   }
 
   try {
@@ -40,13 +40,13 @@ async function createQuestion() {
       questionEn: englishQuestion.value,
       MBTIAttribute: selectedMbti.value,
       HollandAttribute: selectedHolland.value,
-    })
-    englishQuestion.value = ''
-    arabicQuestion.value = ''
-    selectedMbti.value = ''
-    selectedHolland.value = ''
+    });
+    englishQuestion.value = '';
+    arabicQuestion.value = '';
+    selectedMbti.value = '';
+    selectedHolland.value = '';
   } catch {
-    return
+    return;
   }
 }
 </script>
@@ -129,10 +129,7 @@ async function createQuestion() {
 
     <!-- Submit button for creating the question -->
     <div class="create-btn">
-      <customButtonComponent
-        @click="createQuestion"
-        :content="t('buttons.create')"
-      ></customButtonComponent>
+      <customButtonComponent @click="createQuestion" :content="t('buttons.create')"></customButtonComponent>
     </div>
   </div>
 </template>
@@ -218,6 +215,7 @@ async function createQuestion() {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   text-align: center;
+  width: 120px;
 }
 
 /* Radio button styling */
@@ -291,6 +289,7 @@ async function createQuestion() {
   /* Adjust table cells for mobile */
   .content table tr td {
     font-size: 14px;
+    width: 30px;
   }
 
   /* Adjust create button for mobile */

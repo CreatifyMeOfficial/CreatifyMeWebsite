@@ -15,6 +15,7 @@ const totalUsers = ref(0);
 const userCardRefs = ref([]);
 const isLoadingUsers = ref(true);
 const userSearch = ref();
+const noResults = ref(false);
 
 const previousIcon = computed(() => {
   return 'fa-solid fa-chevron-left';
@@ -60,6 +61,8 @@ async function loadUsers() {
       // Reset needUpdate for all cards when page changes
       userCardRefs.value.forEach((card) => card?.resetNeedUpdate());
     }
+    noResults.value = users.value.length === 0;
+
     isLoadingUsers.value = false;
   } catch {
     return;
@@ -126,8 +129,14 @@ function previousPage() {
     <UserCard v-if="!isLoadingUsers" v-for="user in users" :key="user._id" :userId="user._id" :userName="user.userName"
       :profileImage="user.image" :role="user.role" :userSearch="user.userName" @cardSelected="handleCardSelected"
       @roleChanged="refreshPage" ref="userCardRefs"></UserCard>
-    <spinner v-show="isLoadingUsers"></spinner>
-    <div class="controls" v-show="!isLoadingUsers" :dir="direction">
+      <spinner v-show="isLoadingUsers"></spinner>
+      <p
+        v-if="noResults && !isLoadingPersonality"
+        class="no-results"
+      >
+        {{ t('search.notUser') }}
+      </p>
+    <div class="controls" v-show="!isLoadingUsers && !noResults" :dir="direction">
       <button :class="{ disabled: page <= 1 }" @click="previousPage" class="prev-btn">
         <i :class="previousIcon"></i>
       </button>
@@ -176,7 +185,6 @@ function previousPage() {
   font-size: 18px;
   padding: 12px;
   background-color: var(--elements-color);
-  margin: 20px 0;
   caret-color: var(--main-color);
 }
 
@@ -272,12 +280,24 @@ function previousPage() {
   transform: none !important;
 }
 
+.no-results {
+  border: 1px solid var(--main-color);
+  padding: 15px 25px;
+  border-radius: 20px;
+  font-weight: 500;
+  margin:auto;
+  font-size: 22px;
+  height: 40px;
+  text-align: center;
+}
+
 @media (max-width: 767px) {
   .users-container .search-part .input-search {
     width: 150px;
     height: 5px;
     font-size: 14px;
     padding: 10px;
+    margin: 0;
   }
 
   .users-container .search-part i {
@@ -298,7 +318,14 @@ function previousPage() {
 
   .users-container {
     padding: 25px;
-    margin: auto;
+    margin: 0 auto;
   }
+  .no-results {
+    font-weight: 500;
+    font-size: 14px;
+    height: 25px;
+    margin: 140px auto;
+  }
+
 }
 </style>

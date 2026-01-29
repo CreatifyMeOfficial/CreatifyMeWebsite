@@ -183,7 +183,7 @@ export default {
     height: 25px;
   }
   .question-container {
-    margin: auto;
+    margin: 0 auto;
   }
 }
 </style>

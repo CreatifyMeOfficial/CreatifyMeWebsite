@@ -2,7 +2,19 @@
 import Comment from '@/components/commentCard.vue'
 import commentsApi from '@/api/comments'
 import { onMounted, ref, watch, computed, onUnmounted } from 'vue'
+import { useUserStore } from '../stores/user'
 import { useI18n } from 'vue-i18n'
+
+const userStore = useUserStore()
+
+const user = ref(undefined)
+watch(
+  () => userStore.user,
+  (newUser) => {
+    user.value = newUser
+  },
+  { immediate: true },
+)
 
 const { locale } = useI18n()
 const direction = computed(() => {
@@ -139,7 +151,7 @@ function previousPage() {
       :comment="comment.comment"
       :userImage="comment.createdBy.image"
       :userName="comment.createdBy.userName"
-      :enableModification="myCommentsOnly"
+      :enableModification="user?.userName === comment.createdBy.userName"
       @commentDeleted="loadComments"
       @commentUpdated="loadComments"
       @cardSelected="handleCardSelected"

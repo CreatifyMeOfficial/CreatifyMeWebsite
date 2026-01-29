@@ -15,6 +15,8 @@ const personalitiesTotal = ref(0);
 const cardRefs = ref([]);
 const isLoadingPersonality = ref(true);
 const codeValue = ref('');
+const noResults = ref(false);
+
 
 const language = computed(() => {
   return localStorage.getItem('userLanguage');
@@ -61,6 +63,9 @@ async function loadPersonalities() {
     });
     personalities.value = response.data.personalities;
     personalitiesTotal.value = response.data.personalitiesTotal;
+
+    noResults.value = personalities.value.length === 0;
+
     isLoadingPersonality.value = false;
   } catch {
     return;
@@ -133,6 +138,12 @@ function previousPage() {
         <i class="fa-solid fa-chevron-right"></i>
       </button>
     </div>
+    <p
+      v-if="noResults && !isLoadingPersonality"
+      class="no-results"
+    >
+      {{ t('search.notFound') }}
+    </p>
   </div>
 </template>
 <style scoped>
@@ -155,6 +166,7 @@ function previousPage() {
   align-items: center;
   justify-content: center;
   position: relative;
+  height: 30px;
   width: 100%;
 }
 
@@ -244,6 +256,17 @@ function previousPage() {
   transform: scaleX(-1);
 }
 
+.no-results {
+  border: 1px solid var(--main-color);
+  padding: 15px 25px;
+  border-radius: 20px;
+  font-weight: 500;
+  margin: 0 auto;
+  font-size: 22px;
+  height: 30px;
+  text-align: center;
+}
+
 @media (max-width: 767px) {
   .controls button {
     width: 25px;
@@ -259,6 +282,7 @@ function previousPage() {
     height: 5px;
     font-size: 14px;
     padding: 10px;
+    margin: 0;
   }
 
   .container .search-part i {
@@ -271,5 +295,12 @@ function previousPage() {
   .container .search-part .input-search::placeholder {
     font-size: 12px;
   }
+
+  .no-results {
+    font-weight: 500;
+    font-size: 14px;
+    height: 25px;
+  }
+
 }
 </style>

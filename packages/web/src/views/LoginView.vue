@@ -47,7 +47,7 @@ const login = async (e) => {
       })
       if (response.status === 200) {
         userStore.fetchUser()
-        router.push('/')
+        router.push('/test')
       }
     } catch {
       return

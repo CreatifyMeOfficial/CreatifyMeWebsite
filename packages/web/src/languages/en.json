@@ -3,7 +3,9 @@
   "projectGoal": " Our project aims to empower individuals of all ages and backgrounds to discover their true talents, develop them systematically and professionally, and ultimately transform them into sustainable sources of income.",
   "ourBeliefs": "We believe that passion is not necessarily what someone is already skilled at, but rather what resonates deeply with their heart and soul—and it can be cultivated and nurtured. ",
   "search": {
-    "placeholder": "Search"
+    "placeholder": "Search",
+    "notFound":"There are no personalities that start with this code.",
+    "notUser":"There are no user names that start with this name."
   },
   "features": {
     "testYourself": {
@@ -172,7 +174,9 @@
     "newest": "newest",
     "oldest": "oldest",
     "messageOne": "There are no comments at the moment. Be the first to share your opinion",
-    "messageTwo": "You haven't commented before. We'd be happy to know your opinion of us"
+    "messageTwo": "You haven't commented before. We'd be happy to know your opinion of us",
+    "edit":"Edit",
+    "delete":"Delete"
   },
   "adminPanel": {
     "question": "Question",

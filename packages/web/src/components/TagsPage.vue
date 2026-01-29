@@ -213,7 +213,7 @@ onMounted(async () => {
   width: 200px;
   margin: 0 auto;
   display: flex;
-  text-align: center;
+  justify-content: center;
   align-items: center;
   position: relative;
   margin-bottom: 20px;
@@ -233,6 +233,7 @@ onMounted(async () => {
   font-size: 10px;
   padding: 0 20px;
   background-color: var(--elements-color);
+  width: 200px;
 }
 
 /* Search placeholder text styling */
@@ -259,7 +260,6 @@ onMounted(async () => {
   position: absolute;
   font-size: 10px;
   left: 10px;
-  top: 5px;
   color: var(--icon-color);
 }
 

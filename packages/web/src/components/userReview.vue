@@ -130,6 +130,7 @@ export default {
   .user-info img{
     width: 40px;
     height: 40px;
+    box-sizing: border-box;
   }
 }
 </style>

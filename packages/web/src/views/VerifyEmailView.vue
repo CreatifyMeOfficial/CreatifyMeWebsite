@@ -29,7 +29,7 @@ const submitCode = async () => {
     const response = await authApi.verifyUser({ verificationCode: verificationCode.value });
     if (response.status === 200) {
       userStore.fetchUser();
-      router.push('/');
+      router.push('/test');
     }
   } catch{
     return;
