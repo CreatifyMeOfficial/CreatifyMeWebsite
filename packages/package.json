@@ -13,5 +13,8 @@
   "type": "commonjs",
   "devDependencies": {
     "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "@vueuse/core": "^14.2.0"
   }
 }

@@ -1,6 +1,111 @@
+<script setup>
+import { ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import commentsApi from '@/api/comments';
+import warningUp from './warningPopUp.vue';
+import { onClickOutside } from '@vueuse/core';
+
+const { t } = useI18n();
+
+const showMenuButton = ref();
+onClickOutside(showMenuButton, event => {
+  // If a click happens outside of the controls menu then change the showMenu to false so the menu will get closed.
+  showMenu.value = false;
+});
+
+const props = defineProps({
+  userImage: {
+    type: String,
+    default: '',
+  },
+  userName: {
+    type: String,
+    default: '',
+  },
+  comment: {
+    type: String,
+    default: '',
+  },
+  commentId: {
+    type: String,
+    default: '',
+  },
+  enableModification: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const emit = defineEmits(['cardSelected', 'commentDeleted', 'openDetails', 'commentUpdated']);
+
+const editStarted = ref(false);
+const showWarning = ref(false);
+const showMenu = ref(false);
+const content = ref(null);
+
+function openDeleteWarning() {
+  showWarning.value = true;
+}
+
+async function confirmDelete() {
+  showWarning.value = false;
+  await deleteComment();
+}
+
+function cancelDelete() {
+  showWarning.value = false;
+}
+
+async function deleteComment() {
+  try {
+    const response = await commentsApi.deleteComment({ commentId: props.commentId });
+    if (response.status === 200) {
+      emit('commentDeleted');
+    }
+  } catch {
+    return;
+  }
+}
+
+function toggleMenu() {
+  showMenu.value = !showMenu.value;
+}
+
+function openDetails() {
+  showMenu.value = false;
+  emit('openDetails', props.commentId);
+}
+
+async function updateComment() {
+  try {
+    const response = await commentsApi.updateComment({
+      commentId: props.commentId,
+      comment: content.value.innerText.replace(/^\s+|\s+$/g, '').replace(/\r?\n$/, ''),
+    });
+    if (response.status === 200) {
+      emit('commentUpdated');
+    }
+  } catch {
+    return;
+  } finally {
+    editStarted.value = false;
+  }
+}
+
+watch(editStarted, (newVal) => {
+  if (!content.value) return;
+  content.value.contentEditable = newVal;
+  if (newVal === false) {
+    content.value.innerText = props.comment;
+  } else {
+    content.value.focus();
+  }
+});
+</script>
+
 <template>
   <div class="container">
-    <div class="comment" @click="$emit('cardSelected', $el)">
+    <div class="comment" @click="emit('cardSelected', $event.currentTarget)">
       <div class="user">
         <p class="name">{{ userName }}</p>
         <img class="image" :src="userImage" alt="" />
@@ -12,18 +117,14 @@
       <div class="controls">
         <div class="menu-wrapper" v-if="!editStarted">
           <!-- زر الثلاث نقاط -->
-          <button class="menu-btn" @click.stop="toggleMenu" :disabled="!enableModification">
+          <button class="menu-btn" ref="showMenuButton" @click.stop="toggleMenu" :disabled="!enableModification">
             <i class="fa-solid fa-ellipsis-vertical"></i>
           </button>
         </div>
 
 
-        <warningUp
-          v-if="showWarning"
-          :message="t('warningMassage.deleteComment')"
-          @confirm="confirmDelete"
-          @cancel="cancelDelete"
-        />
+        <warningUp v-if="showWarning" :message="t('warningMassage.deleteComment')" @confirm="confirmDelete"
+          @cancel="cancelDelete" />
 
         <div class="update-controls" v-show="enableModification && editStarted">
           <button class="cancel" @click="editStarted = false">
@@ -38,131 +139,22 @@
     <!-- القائمة -->
     <div class="menu" v-show="showMenu">
       <button class="edit" @click="editStarted = true; showMenu = false">
-        {{t('comment.edit')}}
+        {{ t('comment.edit') }}
       </button>
 
       <button @click="openDeleteWarning(); showMenu = false">
-        {{t('comment.delete')}}
+        {{ t('comment.delete') }}
       </button>
     </div>
   </div>
 </template>
-<script>
-import commentsApi from '@/api/comments'
-import warningUp from './warningPopUp.vue'
 
-export default {
-  data() {
-    return {
-      editStarted: false,
-      showWarning: false,
-      showMenu: false,
-    }
-  },
-  components: {
-  warningUp,
-  },
-  props: {
-    userImage: {
-      type: String,
-      default: '',
-    },
-    userName: {
-      type: String,
-      default: '',
-    },
-    comment: {
-      type: String,
-      default: '',
-    },
-    commentId: {
-      type: String,
-      default: '',
-    },
-    enableModification: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  methods: {
-
-    openDeleteWarning() {
-      this.showWarning = true
-    },
-
-    // تأكيد الحذف
-    async confirmDelete() {
-      this.showWarning = false
-      await this.deleteComment()
-    },
-
-    // إلغاء
-    cancelDelete() {
-      this.showWarning = false
-    },
-
-    async deleteComment() {
-      try {
-        const response = await commentsApi.deleteComment({ commentId: this.commentId })
-        if (response.status === 200) {
-          this.$emit('commentDeleted')
-        }
-      } catch {
-        return
-      }
-    },
-
-    toggleMenu() {
-      this.showMenu = !this.showMenu
-    },
-
-    openDetails() {
-      this.showMenu = false
-      this.$emit('openDetails', this.commentId)
-    },
-    async updateComment() {
-      try {
-        const response = await commentsApi.updateComment({
-          commentId: this.commentId,
-          // Remove leading/trailing whitespace and normalize newlines
-          comment: this.$refs.content.innerText.replace(/^\s+|\s+$/g, '').replace(/\r?\n$/, ''),
-        })
-        if (response.status === 200) {
-          this.$emit('commentUpdated')
-        }
-      } catch {
-        return
-      } finally {
-        this.editStarted = false
-      }
-    },
-  },
-  watch: {
-    editStarted(newVal) {
-      this.$refs.content.contentEditable = newVal
-      if (newVal === false) {
-        this.$refs.content.innerText = this.comment
-      } else {
-        this.$refs.content.focus()
-      }
-    },
-  },
-  emits: {
-    cardSelected: null,
-  },
-}
-</script>
-
-<script setup>
-  import { useI18n } from 'vue-i18n';
-
-  const { t } = useI18n()
-</script>
 <style scoped>
-.container{
+.container {
   position: relative;
   width: 100%;
 }
+
 .comment {
   display: flex;
   justify-content: space-between;
@@ -181,7 +173,7 @@ export default {
 .comment:hover {
   /* transform: scale(1.01); */
   scale: 1.01;
-    z-index: 2;
+  z-index: 2;
 
 }
 
@@ -283,7 +275,7 @@ button i {
   top: 45px;
   background: white;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -321,22 +313,26 @@ button i {
   .comment .user {
     width: 75px;
   }
+
   .comment .user .name {
-  font-size: 10px;
-  font-weight: 500;
+    font-size: 10px;
+    font-weight: 500;
 
   }
+
   .comment .controls {
     width: 25px;
   }
+
   .comment .com p {
     font-size: 9px;
   }
+
   button i {
     font-size: 14px;
   }
 
-    .menu {
+  .menu {
     min-width: 65px;
   }
 }

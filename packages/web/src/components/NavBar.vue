@@ -1,21 +1,56 @@
 <script setup>
-import { ref, watch } from 'vue'
-import { useUserStore } from '../stores/user'
-import authApi from '@/api/auth'
-import { useI18n } from 'vue-i18n'
-import fallbackProfileImage from '@/assets/Images/profilePlaceHolder.svg'
+import { ref, watch, useTemplateRef } from 'vue';
+import { useUserStore } from '../stores/user';
+import authApi from '@/api/auth';
+import { onClickOutside } from '@vueuse/core';
+import { useI18n } from 'vue-i18n';
+import fallbackProfileImage from '@/assets/Images/profilePlaceHolder.svg';
 
-const { t } = useI18n()
+const { t } = useI18n();
 
-const userStore = useUserStore()
 
-const user = ref(userStore.user)
-const image = ref('src/assets/Images/profilePlaceHolder.svg')
+// Start of the nav bar (nav links - profile links) expanding logic
+// Profile and nav links expanding refs
+const navLinksExpandButton = ref();
+const navLinks = ref();
+const profileLinksExpandButton = ref();
+const profileLinks = ref();
+const isExpanded = ref(false);
+const isProfileExpanded = ref(false);
+
+// Listen to any click that happens outside of the nav links
+onClickOutside(navLinks, event => {
+  // If the click is not on the nav links expand button then change the isExpanded to false so the nav links will get closed.
+  // This check is important to prevent the isExpanded from being changed twice.
+  // If this check doesn't exist when the expand button is clicked and the nav links is expanded this method will change the isExpanded to false
+  // then the expand button will negate it so it will stay true and the nav links won't close.
+  if (!(event.target === navLinksExpandButton.value)) {
+    isExpanded.value = false;
+  }
+});
+
+// Listen to any click that happens outside of the profile links
+onClickOutside(profileLinks, event => {
+  // If the click is not on the profile links expand button then change the isProfileExpanded to false so the profile links will get closed.
+  // This check is important to prevent the isProfileExpanded from being changed twice.
+  // If this check doesn't exist when the expand button is clicked and the profile links is expanded this method will change the isProfileExpanded to false
+  // then the expand button will negate it so it will stay true and the profile links won't close.
+  if (!(event.target === profileLinksExpandButton.value)) {
+    isProfileExpanded.value = false;
+  }
+});
+
+// End of the nav bar (nav links - profile links) expanding logic
+
+const userStore = useUserStore();
+
+const user = ref(userStore.user);
+const image = ref('src/assets/Images/profilePlaceHolder.svg');
 
 async function logout() {
   try {
-    await authApi.logout()
-    userStore.clearUser()
+    await authApi.logout();
+    userStore.clearUser();
   } catch {
     return;
   }
@@ -24,11 +59,11 @@ async function logout() {
 watch(
   () => userStore.user,
   (newUser) => {
-    user.value = newUser
-    image.value = newUser?.image
+    user.value = newUser;
+    image.value = newUser?.image;
   },
   { immediate: true },
-)
+);
 </script>
 
 <template>
@@ -37,7 +72,7 @@ watch(
       <RouterLink to="/"><img src="../assets/images/CreatifyLog.svg" alt="" /></RouterLink>
     </div>
     <div class="controls">
-      <ul class="nav-links" :class="{long:user?.role === 'admin' || user?.role === 'super_admin'}">
+      <ul class="nav-links" ref="navLinks" :class="{ long: user?.role === 'admin' || user?.role === 'super_admin' }">
         <li class="nav-link">
           <RouterLink to="/" @click="isExpanded = false">{{ t('navbar.home') }}</RouterLink>
         </li>
@@ -53,31 +88,27 @@ watch(
           }}</RouterLink>
         </li>
       </ul>
-      <div class="expand-button" @click="((isExpanded = !isExpanded), (isProfileOpen = false))">
-        <i class="fa-solid fa-bars"></i>
+      <div class="expand-button">
+        <i class="fa-solid fa-bars" ref="navLinksExpandButton" @click="isExpanded = !isExpanded"></i>
       </div>
-      <img
-        class="profile-image"
-        @click="((isProfileOpen = !isProfileOpen), (isExpanded = false))"
-        :src="image ? image : fallbackProfileImage"
-        alt=""
-      />
-      <div class="profile-dropdown" :class="{ open: isProfileOpen }">
+      <img class="profile-image" ref="profileLinksExpandButton" @click="isProfileExpanded = !isProfileExpanded"
+        :src="image ? image : fallbackProfileImage" alt="" />
+      <div class="profile-dropdown" ref="profileLinks" :class="{ open: isProfileExpanded }">
         <div class="profile-dropdown-item">
-          <RouterLink to="/settings" @click="isProfileOpen = false">{{
+          <RouterLink to="/settings" @click="isProfileExpanded = false">{{
             t('navbar.settings')
           }}</RouterLink>
         </div>
         <div class="profile-dropdown-item">
-          <RouterLink to="/result" @click="isProfileOpen = false">{{
+          <RouterLink to="/result" @click="isProfileExpanded = false">{{
             t('navbar.result')
           }}</RouterLink>
         </div>
         <div class="profile-dropdown-item">
-          <RouterLink to="/" v-if="user" class="without-hightlight" @click="((isProfileOpen = false), logout())">{{
+          <RouterLink to="/" v-if="user" class="without-hightlight" @click="((isProfileExpanded = false), logout())">{{
             t('navbar.logout')
           }}</RouterLink>
-          <RouterLink to="/signup" @click="isProfileOpen = false" v-else>{{
+          <RouterLink to="/signup" @click="isProfileExpanded = false" v-else>{{
             t('navbar.signup')
           }}</RouterLink>
         </div>
@@ -85,17 +116,6 @@ watch(
     </div>
   </nav>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      isExpanded: false,
-      isProfileOpen: false,
-    }
-  },
-}
-</script>
 
 <style scoped>
 nav {
