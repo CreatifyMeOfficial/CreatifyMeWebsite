@@ -7,10 +7,17 @@ const resultSchema = new mongoose.Schema({
     unique: true,
     ref: 'User'
   },
-  codeId: {
-    type: mongoose.Types.ObjectId,
+  code: {
+    type: String,
     required: true,
-    ref: 'Personality'
+  },
+  arabicDescription: {
+    type: Object,
+    required: true
+  },
+  englishDescription: {
+    type: Object,
+    required: true
   }
 });
 

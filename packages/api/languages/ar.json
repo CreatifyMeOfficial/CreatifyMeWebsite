@@ -16,6 +16,7 @@
   "questionCreatedSuccessfully": "تم إضافة السؤال بنجاح.",
   "questionDeletedSuccessfully": "تم حذف السؤال بنجاح.",
   "questionDoesNotExist": "هذا السؤال غير موجود!",
+  "resultReady": "نتيجتك جاهزة.",
   "questionUpdatedSuccessfully": "تم تحديث السؤال بنجاح.",
   "userDoesNotHaveResult": "هذا المستخدم لا يملك نتيجة حتى الآن!",
   "questionEnShort": "السؤال الانجليزي أقصر من الطول المسموح!",

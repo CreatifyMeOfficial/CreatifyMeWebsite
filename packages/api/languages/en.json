@@ -16,6 +16,7 @@
   "questionCreatedSuccessfully": "The question was created successfully.",
   "questionDeletedSuccessfully": "The question was deleted successfully.",
   "questionDoesNotExist": "This question doesn't exist!",
+  "resultReady": "Your result is ready.",
   "questionUpdatedSuccessfully": "The question was updated successfully.",
   "userDoesNotHaveResult": "This user doesn't have a result yet!",
   "questionEnShort": "The english question is shorter than the allowed length!",

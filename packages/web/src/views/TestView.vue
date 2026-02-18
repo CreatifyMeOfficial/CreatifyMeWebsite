@@ -16,6 +16,7 @@ const questions = ref([]);
 const page = ref(1);
 const pageQuestionLimit = 4;
 const isLoadingTest = ref(true);
+const isCalculatingResult = ref(false);
 let answers = [];
 
 
@@ -97,6 +98,7 @@ async function submitAnswers() {
       createNotification('Please answer all the questions', notificationTypes.Warning, 5);
       return;
     }
+    isCalculatingResult.value = true;
     const response = await questionsApi.calculateResults({ answers: answers });
     if (response.status === 200) {
       localStorage.removeItem('Answers');
@@ -104,6 +106,9 @@ async function submitAnswers() {
     }
   } catch {
     return;
+  }
+  finally {
+    isCalculatingResult.value = false;
   }
 }
 
@@ -130,51 +135,76 @@ function previousPage() {
 </script>
 
 <template>
-  <div class="questions">
-    <!-- Progress Bar -->
-    <press v-if="!isLoadingTest" :totalQuestions="questions.length" :answeredQuestions="answeredQuestionsCount"
-      class="progress-section" />
-    <TestQuestion class="question-template" v-for="(question, index) in questions" :key="question._id"
-      :question="question[questionField]" :number="index + 1"
-      :savedSelection="answers.find((ans) => ans.questionId === question._id)?.value" :questionId="question._id" :class="{
-        hiddenQuestion: !(
-          index >= (page - 1) * pageQuestionLimit && index < page * pageQuestionLimit
-        ),
-      }" :displayInfo="index % pageQuestionLimit === 0" @answer-changed="handleAnswerChange"></TestQuestion>
-    <div class="placeholder" v-show="isLoadingTest">
-      <div class="up"></div>
-      <div class="down"></div>
-    </div>
-
-    <div class="placeholder" v-show="isLoadingTest">
-      <div class="up"></div>
-      <div class="down"></div>
-    </div>
-    <div class="placeholder" v-show="isLoadingTest">
-      <div class="up"></div>
-      <div class="down"></div>
-    </div>
-    <div class="placeholder" v-show="isLoadingTest">
-      <div class="up"></div>
-      <div class="down"></div>
-    </div>
-    <div class="controls">
-      <div class="navigation-btn">
-        <customButtonComponent v-if="page > 1" @click="previousPage" :content="t('buttons.previous')">
-        </customButtonComponent>
-        <customButtonComponent v-if="page < questions.length / pageQuestionLimit" @click="nextPage"
-          :content="t('buttons.next')"></customButtonComponent>
+  <div class="test-container">
+    <div class="questions" :class="{ blur: isCalculatingResult }">
+      <!-- Progress Bar -->
+      <press v-if="!isLoadingTest" :totalQuestions="questions.length" :answeredQuestions="answeredQuestionsCount"
+        class="progress-section" />
+      <TestQuestion class="question-template" v-for="(question, index) in questions" :key="question._id"
+        :question="question[questionField]" :number="index + 1"
+        :savedSelection="answers.find((ans) => ans.questionId === question._id)?.value" :questionId="question._id"
+        :class="{
+          hiddenQuestion: !(
+            index >= (page - 1) * pageQuestionLimit && index < page * pageQuestionLimit
+          ),
+        }" :displayInfo="index % pageQuestionLimit === 0" @answer-changed="handleAnswerChange"></TestQuestion>
+      <div class="placeholder" v-show="isLoadingTest">
+        <div class="up"></div>
+        <div class="down"></div>
       </div>
-      <customButtonComponent class="submit-btn" :disabled="!isSubmit" @click="submitAnswers"
-        :content="t('buttons.submit')"></customButtonComponent>
+
+      <div class="placeholder" v-show="isLoadingTest">
+        <div class="up"></div>
+        <div class="down"></div>
+      </div>
+      <div class="placeholder" v-show="isLoadingTest">
+        <div class="up"></div>
+        <div class="down"></div>
+      </div>
+      <div class="placeholder" v-show="isLoadingTest">
+        <div class="up"></div>
+        <div class="down"></div>
+      </div>
+      <div class="controls">
+        <div class="navigation-btn">
+          <customButtonComponent v-if="page > 1" @click="previousPage" :content="t('buttons.previous')">
+          </customButtonComponent>
+          <customButtonComponent v-if="page < questions.length / pageQuestionLimit" @click="nextPage"
+            :content="t('buttons.next')"></customButtonComponent>
+        </div>
+        <customButtonComponent class="submit-btn" :disabled="!isSubmit" @click="submitAnswers"
+          :content="t('buttons.submit')"></customButtonComponent>
+      </div>
     </div>
+    <!-- Start of waiting for result calculation popup -->
+    <div class="calculation-popup" v-if="isCalculatingResult">
+      <div class="creatify-loader">
+        <div class="shape">
+          <img src="../assets/Images/waitingAnimation.svg" alt="">
+        </div>
+        <div class="info">
+          <i class="fa-solid fa-maximize"></i>
+          <p>{{ t('test.waitingForResult') }}</p>
+        </div>
+      </div>
+    </div>
+    <!-- End of waiting for result calculation popup -->
   </div>
 </template>
 
 <style scoped>
+.text-container {
+  position: relative;
+}
+
 .questions {
   width: 100%;
   padding: 50px 0;
+}
+
+.questions.blur {
+  filter: blur(2px);
+  pointer-events: none;
 }
 
 .questions .question-template.hiddenQuestion {
@@ -240,7 +270,68 @@ function previousPage() {
   visibility: hidden;
 }
 
+/* Start of waiting for result calculation popup */
+.calculation-popup {
+  position: absolute;
+  width: 500px;
+  height: 300px;
+  left: calc(50% - 250px);
+  top: calc(50% - 150px);
+  background: var(--elements-color);
+  box-shadow: 1px 2px 4px var(--text-color);
+  border-radius: 5px;
+  z-index: 2;
+}
+
+.creatify-loader {
+  text-align: center;
+  padding: 40px;
+}
+
+.shape {
+  display: flex;
+  justify-content: center;
+}
+
+
+.calculation-popup .info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.calculation-popup .info i {
+  color: var(--main-color);
+}
+
+.calculation-popup .info p {
+  margin: 25px 0;
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+/* End of waiting for result calculation popup */
+
 @media (max-width: 767px) {
+
+  /* Start of waiting for result calculation popup */
+  .calculation-popup {
+    width: 350px;
+    height: 250px;
+    top: calc(50% - 125px);
+    left: calc(50% - 175px);
+  }
+
+  .shape img {
+    width: 250px;
+  }
+
+  .calculation-popup .info p {
+    font-size: 10px;
+  }
+
+  /* End of waiting for result calculation popup */
   .controls button {
     width: 100px;
     padding: 5px 10px;

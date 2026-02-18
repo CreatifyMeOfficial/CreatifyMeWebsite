@@ -1,0 +1,35 @@
+<svg width="350" height="150" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="infinityGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#5a489e; stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#62b1e9; stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <style>
+    .infinity-path {
+      fill: none;
+      /* Reference the gradient ID */
+      stroke: url(#infinityGradient); 
+      stroke-width: 25;
+      stroke-linecap: round;
+      stroke-dasharray: 450;
+      stroke-dashoffset: 450;
+      animation: draw-loop 4s ease-in-out infinite;
+    }
+
+    @keyframes draw-loop {
+      0% { stroke-dashoffset: 450; }
+      50% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: -450; }
+    }
+  </style>
+
+  <path class="infinity-path" 
+    d="M100,50 
+       C140,10 190,10 190,50 
+       C190,90 140,90 100,50 
+       C60,10 10,10 10,50 
+       C10,90 60,90 100,50 
+       Z" />
+</svg>

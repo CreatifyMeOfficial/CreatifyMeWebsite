@@ -4,8 +4,8 @@
   "ourBeliefs": "We believe that passion is not necessarily what someone is already skilled at, but rather what resonates deeply with their heart and soul—and it can be cultivated and nurtured. ",
   "search": {
     "placeholder": "Search",
-    "notFound":"There are no personalities that start with this code.",
-    "notUser":"There are no user names that start with this name."
+    "notFound": "There are no personalities that start with this code.",
+    "notUser": "There are no user names that start with this name."
   },
   "features": {
     "testYourself": {
@@ -32,7 +32,7 @@
     "previous": "Previous",
     "submit": "Submit",
     "create": "Create",
-    "ok":"ok"
+    "ok": "ok"
   },
   "userReviews": {
     "title": "What our users say about us",
@@ -166,7 +166,8 @@
   },
   "test": {
     "disagree": "Disagree",
-    "agree": "Agree"
+    "agree": "Agree",
+    "waitingForResult": "Calculating your result this may take a while. Thank you for your patience!"
   },
   "comment": {
     "cheackBoxLabel": "My Comments Only",
@@ -175,8 +176,8 @@
     "oldest": "oldest",
     "messageOne": "There are no comments at the moment. Be the first to share your opinion",
     "messageTwo": "You haven't commented before. We'd be happy to know your opinion of us",
-    "edit":"Edit",
-    "delete":"Delete"
+    "edit": "Edit",
+    "delete": "Delete"
   },
   "adminPanel": {
     "question": "Question",
@@ -230,8 +231,8 @@
     "addPlaceholder": "Enter new password",
     "confirmPlaceholder": "Confirm new password"
   },
-  "validateUser":{
-    "passwordWarning":"Password must be 10-50 chars, include upper, lower, number, symbol, and no spaces.",
+  "validateUser": {
+    "passwordWarning": "Password must be 10-50 chars, include upper, lower, number, symbol, and no spaces.",
     "confirmPasswordWarning": "Confirm password dosen't match the password.",
     "firstNameWarning": "First name must be between (3 and 25) letters.",
     "lastNameWarning": "Last name must be between (3 and 25) letters.",
@@ -240,14 +241,18 @@
     "phoneNumberWarning": "This is not a valid phone number.",
     "birthdayWarning": "To create an account you must be 15 years old at least."
   },
-  "testResult":{
-    "title":" your test result is:  "
+  "testResult": {
+    "keyTraits": "Key Traits:",
+    "strengths": "Strengths:",
+    "manifestation": "Manifestation:",
+    "selfDevelopment": "Self Development:",
+    "careerRecommendation": "Career Recommendation:"
   },
-  "warningMassage":{
-    "forSure":" Are you sure ?",
+  "warningMassage": {
+    "forSure": " Are you sure ?",
     "deleteComment": "This comment will be deleted.",
-    "deleteAccount" : "Your account will be deleted.",
-    "deleteUser":"This user will be deleted.",
+    "deleteAccount": "Your account will be deleted.",
+    "deleteUser": "This user will be deleted.",
     "deleteTag": "This tag will be deleted."
   }
 }

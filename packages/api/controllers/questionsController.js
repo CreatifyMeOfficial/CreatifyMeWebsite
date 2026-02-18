@@ -6,6 +6,7 @@ const MBTIAttributes = require('../enums/MBTIAttributes');
 const HollandAttributes = require('../enums/HollandAttributes');
 const { GenerateStructure } = require('../helperMethods/testResultStructure');
 const PersonalityModel = require('../models/personalityModel');
+const summarizePersonality = require('../helperMethods/aiManager');
 
 /**
  * @description Retrieves all the test questions from the database
@@ -114,19 +115,28 @@ const CalculateResults = async (req, res) => {
 
   result.holland = sortedHolland.join('');
 
-  // Get the description of the user personality 
-  const description = await PersonalityModel.findOne({ code: `${result.holland}+${result.mbti}` });
+  // Get the personality of the user
+  const personality = await PersonalityModel.findOne({ code: `${result.holland}+${result.mbti}` })
+    .select('arabicDescription englishDescription code').lean(); // Select the important data only and convert them to a simple js object to prevent sending a long prompt to the agent
+
+  // Generate a summarized result using ai agents
+  const aiResponse = await summarizePersonality(personality);
+  // Convert the response into json 
+  const jsonAiResponse = JSON.parse(aiResponse);
+
 
   // Save the user result. if the user has a result then update it if not create a new one
   const existingResult = await ResultModel.findOne({ userId: userId });
   if (existingResult) {
-    existingResult.codeId = description._id;
+    existingResult.code = personality.code;
+    existingResult.arabicDescription = jsonAiResponse.arabicDescription;
+    existingResult.englishDescription = jsonAiResponse.englishDescription;
     await existingResult.save();
   } else {
-    await ResultModel.create({ userId: userId, codeId: description._id });
+    await ResultModel.create({ userId: userId, code: personality.code, arabicDescription: jsonAiResponse.arabicDescription, englishDescription: jsonAiResponse.englishDescription });
   }
 
-  res.status(StatusCodes.OK).json({ result: description });
+  res.status(StatusCodes.OK).json({ msg: req.t('resultReady') });
 };
 
 
@@ -142,9 +152,7 @@ const GetUserResult = async (req, res) => {
   if (!result) {
     throw new NotFoundError(req.t('userDoesNotHaveResult'));
   }
-
-  const description = await PersonalityModel.findById(result.codeId);
-  res.status(StatusCodes.OK).json({ result: description });
+  res.status(StatusCodes.OK).json({ result: result });
 };
 
 
