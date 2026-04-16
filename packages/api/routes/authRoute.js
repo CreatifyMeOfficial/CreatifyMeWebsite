@@ -5,10 +5,11 @@ const { Login, Register, Logout, VerifyEmail, SendVerificationEmail, ResetPasswo
 const authenticate = require('../middleware/authentication');
 const rateLimit = require('express-rate-limit');
 const isUserVerified = require("../middleware/verification");
-const upload = require('multer')({ dest: 'uploads/' });
 const { RateLimitError } = require('../errors');
+const { getConfiguration } = require('../helperMethods/multerConfiguration');
+const upload = require('multer')(getConfiguration());
 
-
+// TODO: update the verify email and reset password endpoints method type
 router.post('/user/signup', Register);
 router.post('/user/login', Login);
 router.post('/user/logout', Logout);

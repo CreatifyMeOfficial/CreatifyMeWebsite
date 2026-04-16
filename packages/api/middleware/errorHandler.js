@@ -1,6 +1,7 @@
 const { MongooseError } = require("mongoose");
 const { customApiError, InvalidPasswordError } = require("../errors");
 const { StatusCodes } = require("http-status-codes");
+const multer = require('multer');
 
 const handler = (err, req, res, next) => {
   // Check for the custom errors
@@ -32,6 +33,11 @@ const handler = (err, req, res, next) => {
     // if the field is not the username or email then just notify the user to change the value
     else {
       return res.status(StatusCodes.BAD_REQUEST).json({ msg: `${field} ${req.t('mustBeUnique')}` });
+    }
+  }
+  if (err instanceof multer.MulterError) {
+    if (err.code === "LIMIT_FILE_SIZE") {
+      return res.status(StatusCodes.BAD_REQUEST).json({ msg: req.t('fileTooLarge') });
     }
   }
   return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: req.t('serverError') });

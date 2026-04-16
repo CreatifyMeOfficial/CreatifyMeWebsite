@@ -97,5 +97,7 @@
   "invalidValue": "Invalid value for ",
   "accountExist": "This account already exist! Please change your email or username and try again.",
   "mustBeUnique": "must be unique!",
-  "serverError": "Oops! Something went wrong on our end. Please try again later. If the issue persists, contact support."
+  "serverError": "Oops! Something went wrong on our end. Please try again later. If the issue persists, contact support.",
+  "badImageFileType": "Only images (jpeg, jpg, png, gif) are allowed!",
+  "fileTooLarge": "The size of the file is bigger than the allowed size 2MB!"
 }

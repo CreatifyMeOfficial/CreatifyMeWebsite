@@ -11,7 +11,7 @@
       fill: none;
       /* Reference the gradient ID */
       stroke: url(#infinityGradient); 
-      stroke-width: 25;
+      stroke-width: 10;
       stroke-linecap: round;
       stroke-dasharray: 450;
       stroke-dashoffset: 450;
