@@ -99,5 +99,13 @@
   "mustBeUnique": "يجب أن يكون فريداً!",
   "serverError": "عذراً! حدث خطأ من جانبنا. رجاء حاول مرة أخرى لاحقاً. إذا استمرت المشكلة، فاتصل بالدعم.",
   "badImageFileType": "الصور مسموح بها فقط(jpeg, jpg, png, gif)!",
-  "fileTooLarge": "حجم الملف أكبر من الحد المسموح به 2MB!"
+  "fileTooLarge": "حجم الملف أكبر من الحد المسموح به 2MB!",
+  "paymentCompleted": "تمت عملية الدفع بنجاح.",
+  "paymentDeclined": "تم رفض عملية الدفع! رجاء حاول مجددا.",
+  "paymentFailed": "عملية الدفع فشلت! رجاء حاول مرة أخرى لاحقاً. إذا استمرت المشكلة، فاتصل بالدعم.",
+  "paymentRequired": "رجاء قم بدفع الرسوم أولاً!",
+  "InvalidCheckoutSession": "جلسة دفع غير صالحة!",
+  "UnauthorizedCheckoutSession": "غير مسموح لك بالوصول إلى جلسة الدفع هذه!",
+  "CompletingCancelledOrder": "تم إلغاء هذا الطلب! رجاء قم ببدء عملية الدفع من جديد.",
+  "CancellingCompletedOrder": "هذا الطلب متمم! لا يمكنك إلغاؤه."
 }

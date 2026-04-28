@@ -131,6 +131,7 @@ const CalculateResults = async (req, res) => {
     existingResult.code = personality.code;
     existingResult.arabicDescription = jsonAiResponse.arabicDescription;
     existingResult.englishDescription = jsonAiResponse.englishDescription;
+    existingResult.isPaid = false;
     await existingResult.save();
   } else {
     await ResultModel.create({ userId: userId, code: personality.code, arabicDescription: jsonAiResponse.arabicDescription, englishDescription: jsonAiResponse.englishDescription });

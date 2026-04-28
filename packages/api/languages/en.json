@@ -99,5 +99,13 @@
   "mustBeUnique": "must be unique!",
   "serverError": "Oops! Something went wrong on our end. Please try again later. If the issue persists, contact support.",
   "badImageFileType": "Only images (jpeg, jpg, png, gif) are allowed!",
-  "fileTooLarge": "The size of the file is bigger than the allowed size 2MB!"
+  "fileTooLarge": "The size of the file is bigger than the allowed size 2MB!",
+  "paymentCompleted": "Payment was completed successfully.",
+  "paymentDeclined": "The payment was declined! Please try again.",
+  "paymentFailed": "The payment failed! Please try again later. If the issue persists, contact support.",
+  "paymentRequired": "Please pay the fees first!",
+  "InvalidCheckoutSession": "Invalid checkout session!",
+  "UnauthorizedCheckoutSession": "You are not authorized to access this checkout session!",
+  "CompletingCancelledOrder": "This order was cancelled! Please start the payment process again.",
+  "CancellingCompletedOrder": "This order was completed! You can't cancel it."
 }

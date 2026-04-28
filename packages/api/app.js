@@ -20,6 +20,7 @@ const adminRoute = require('./routes/adminRoute');
 const questionsRoute = require('./routes/questionsRoute');
 const tagsRoute = require('./routes/tagsRoute');
 const personalitiesRoute = require('./routes/personalitiesRoute');
+const paymentRoute = require('./routes/paymentRoute');
 
 // Import middlewares
 const errorHandler = require('./middleware/errorHandler');
@@ -68,8 +69,9 @@ app.use(hpp());
 app.use(sanitizer.clean({
   xss: false,
   noSql: true,
-  sql: true
-}));
+  sql: true,
+}, ['/api/v1/user/upload-image']));
+
 app.use(xss());
 
 // Add routes
@@ -79,6 +81,7 @@ app.use('/api/v1/', adminRoute);
 app.use('/api/v1/', questionsRoute);
 app.use('/api/v1/', tagsRoute);
 app.use('/api/v1/', personalitiesRoute);
+app.use('/api/v1/', paymentRoute);
 
 // Add not found middleware
 app.use(notFoundMiddleware);

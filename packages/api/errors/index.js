@@ -6,7 +6,10 @@ const UnauthorizedError = require('./unauthorizedCustomError');
 const ForbiddenError = require('./forbiddenError');
 const RateLimitError = require('./rateLimitError');
 const InvalidPasswordError = require('./invalidPasswordError');
+const PaymentRequiredError = require('./paymentRequiredError');
 
 module.exports = {
-  NotFoundError, BadRequestError, customApiError, UnauthenticatedError, UnauthorizedError, ForbiddenError, RateLimitError, InvalidPasswordError
+  NotFoundError, BadRequestError, customApiError, UnauthenticatedError,
+  UnauthorizedError, ForbiddenError, RateLimitError, InvalidPasswordError,
+  PaymentRequiredError
 };

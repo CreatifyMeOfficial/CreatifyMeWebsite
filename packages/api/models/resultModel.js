@@ -18,6 +18,11 @@ const resultSchema = new mongoose.Schema({
   englishDescription: {
     type: Object,
     required: true
+  },
+  isPaid: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 });
 

@@ -35,10 +35,34 @@ const handler = (err, req, res, next) => {
       return res.status(StatusCodes.BAD_REQUEST).json({ msg: `${field} ${req.t('mustBeUnique')}` });
     }
   }
+
   if (err instanceof multer.MulterError) {
     if (err.code === "LIMIT_FILE_SIZE") {
       return res.status(StatusCodes.BAD_REQUEST).json({ msg: req.t('fileTooLarge') });
     }
+  }
+  
+  // Inside your error handler's Axios block
+  if (err.isAxiosError && err.response) {
+    const { data } = err.response;
+    const issue = data.details?.[0]?.issue; // PayPal's specific error code
+
+    // Group 1: User-fixable errors
+    const userErrors = ['INSTRUMENT_DECLINED', 'PAYER_ACTION_REQUIRED', 'TRANSACTION_REFUSED'];
+
+    if (userErrors.includes(issue)) {
+      return res.status(StatusCodes.PAYMENT_REQUIRED).json({
+        msg: req.t('paymentDeclined')
+      });
+    }
+
+    // Group 2: The "Already Done" safety net (if DB failed but PayPal succeeded)
+    if (issue === 'ORDER_ALREADY_CAPTURED') {
+      return res.status(StatusCodes.OK).json({ msg: req.t('paymentCompleted') });
+    }
+
+    // Group 3: General Failure
+    return res.status(StatusCodes.BAD_REQUEST).json({ msg: req.t('paymentFailed') });
   }
   return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: req.t('serverError') });
 };

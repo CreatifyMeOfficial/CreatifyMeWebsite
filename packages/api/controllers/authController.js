@@ -271,8 +271,6 @@ const SendVerificationEmail = async (req, res) => {
  */
 const AddUserImage = async (req, res) => {
   if (!req.file) {
-    // Delete the temporary image from the server
-    await fs.unlink(req.file.path);
     throw new BadRequestError(req.t('imageRequired'));
   }
   if (!req.file.mimetype.startsWith('image/')) {
@@ -280,14 +278,20 @@ const AddUserImage = async (req, res) => {
     await fs.unlink(req.file.path);
     throw new BadRequestError(req.t('imageFileIncorrect'));
   }
-  // Upload the user profile image to cloudinary website 
-  const imageUrl = await uploadImage(req.file.path, req.user.userId);
-  // Save the image url to the data base
-  await userModel.findByIdAndUpdate(req.user.userId, { image: imageUrl });
-  // Delete the temporary image from the server
-  await fs.unlink(req.file.path);
+  try {
+    // Upload the user profile image to cloudinary website 
+    const imageUrl = await uploadImage(req.file.path, req.user.userId);
+    // Save the image url to the data base
+    await userModel.findByIdAndUpdate(req.user.userId, { image: imageUrl });
+  } catch (err) {
+    throw err;
+  }
+  finally {
+    // Delete the temporary image from the server
+    await fs.unlink(req.file.path);
+  }
 
-  res.status(StatusCodes.OK).json({ msg: "userImageUpdatedSuccessfully" });
+  res.status(StatusCodes.OK).json({ msg: req.t("userImageUpdatedSuccessfully") });
 };
 
 /**
