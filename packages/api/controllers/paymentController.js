@@ -5,6 +5,7 @@ const { StatusCodes } = require("http-status-codes");
 const paymentModel = require('../models/paymentModel');
 const resultModel = require('../models/resultModel');
 const paymentStatus = require('../enums/paymentStatus');
+const mongoose = require('mongoose');
 const { BadRequestError } = require('../errors');
 
 /**
