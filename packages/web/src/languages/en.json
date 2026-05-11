@@ -32,7 +32,8 @@
     "previous": "Previous",
     "submit": "Submit",
     "create": "Create",
-    "ok": "ok"
+    "ok": "ok",
+    "continue": "Continue"
   },
   "userReviews": {
     "title": "What our users say about us",
@@ -169,6 +170,11 @@
     "agree": "Agree",
     "waitingForResult": "Calculating your result this may take a while. Thank you for your patience!"
   },
+  "checkoutProduct": {
+    "productTitle": "Your personality test result plus a free bonus.",
+    "productDescription": "Your personality test result is ready! Discover your unique traits with our AI-powered analysis.",
+    "productTotal": "$9.00"
+  },
   "comment": {
     "cheackBoxLabel": "My Comments Only",
     "sort": "Sort By",
@@ -246,7 +252,8 @@
     "strengths": "Strengths:",
     "manifestation": "Manifestation:",
     "selfDevelopment": "Self Development:",
-    "careerRecommendation": "Career Recommendation:"
+    "careerRecommendation": "Career Recommendation:",
+    "downloadPdf": "Download The Gift"
   },
   "warningMassage": {
     "forSure": " Are you sure ?",

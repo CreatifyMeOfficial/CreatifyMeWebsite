@@ -10,6 +10,7 @@ import Comments from '../views/CommentsView.vue';
 import Result from '@/views/ResultView.vue';
 import ReportBug from '../views/BugRreportView.vue';
 import VerifyEmail from '../views/VerifyEmailView.vue';
+import CheckoutProduct from '../views/CheckoutProductView.vue';
 import SettingsPage from '../components/settingsPage.vue';
 import ProfilePage from '../components/profilePage.vue';
 import PersonalitiesPage from '@/components/personalitiesPage.vue';
@@ -65,6 +66,7 @@ const router = createRouter({
       ]
     },
     { path: '/comments', component: Comments },
+    { path: '/checkout-product', component: CheckoutProduct },
     { path: '/result', component: Result },
     { path: '/reportBug', component: ReportBug },
     { path: '/verifyEmail', component: VerifyEmail },

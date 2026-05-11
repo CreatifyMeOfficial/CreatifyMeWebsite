@@ -32,7 +32,8 @@
     "previous": "السابق",
     "submit": "تقديم",
     "create": "إنشاء",
-    "ok": "حسناً"
+    "ok": "حسناً",
+    "continue": "متابعة"
   },
   "userReviews": {
     "title": "ماذا يقول المستخدمون عنا",
@@ -169,6 +170,11 @@
     "agree": "أوافق",
     "waitingForResult": "يتم حساب نتيجتك الأن قد يأخذ هذا القليل من الوقت. شكرا على صبرك!"
   },
+  "checkoutProduct": {
+    "productTitle": "نتيجة اختبار شخصيتك بالإضافة إلى هدية مجانية.",
+    "productDescription": "نتيجة اختبار شخصيتك جاهزة! اكتشف صفاتك المميزة مع تحليلنا المعزز بالذكاء الاصطناعي.",
+    "productTotal": "$9.00"
+  },
   "comment": {
     "cheackBoxLabel": "تعليقاتي فقط",
     "sort": "ترتيب بحسب",
@@ -244,7 +250,8 @@
     "strengths": "نقاط القوة:",
     "manifestation": "التجلي:",
     "selfDevelopment": "التطوير الذاتي:",
-    "careerRecommendation": "التوصية المهنية:"
+    "careerRecommendation": "التوصية المهنية:",
+    "downloadPdf": "تحميل الهدية"
   },
   "warningMassage": {
     "forSure": "هل أنت متأكد ؟",

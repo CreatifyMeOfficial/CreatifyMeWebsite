@@ -1,15 +1,16 @@
 <script setup>
-import { onMounted, ref, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-import resultApi from '@/api/questions';
-import paymentsApi from '@/api/payments';
+import { onMounted, ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import resultApi from '@/api/questions'
+import customButtonComponent from '@/components/customButtonComponent.vue'
+import { downloadFile } from '@/helperMethods/downloadFile'
 
-const { t } = useI18n();
-const result = ref([]);
-const description = ref({ ar: '', en: '' });
-const isLoadingResult = ref(true);
-const isNotificationBoxVisible = ref(false);
-const notificationInfo = ref({ link: '', info: { ar: '', en: '' } });
+const { t } = useI18n()
+const result = ref([])
+const description = ref({ ar: '', en: '' })
+const isLoadingResult = ref(true)
+const isNotificationBoxVisible = ref(false)
+const notificationInfo = ref({ link: '', info: { ar: '', en: '' } })
 
 // This is used to split the api result into the 5 sections
 const resultSections = computed(() => [
@@ -17,67 +18,73 @@ const resultSections = computed(() => [
   { key: 'strengths', contentKey: 'strengths', icon: 'fa-solid fa-bolt' },
   { key: 'manifestation', contentKey: 'manifestation', icon: 'fa-solid fa-mountain' },
   { key: 'selfDevelopment', contentKey: 'selfDevelopment', icon: 'fa-solid fa-seedling' },
-  { key: 'careerRecommendation', contentKey: 'careerRecommendation', icon: 'fa-solid fa-briefcase' },
-]);
+  {
+    key: 'careerRecommendation',
+    contentKey: 'careerRecommendation',
+    icon: 'fa-solid fa-briefcase',
+  },
+])
 
 async function loadResult() {
-  const response = await resultApi.getResult();
+  const response = await resultApi.getResult()
   if (response.status === 200) {
-    result.value = response.data.result;
+    result.value = response.data.result
     description.value = {
       ar: result.value['arabicDescription'],
       en: result.value['englishDescription'],
-    };
-    isLoadingResult.value = false;
+    }
+    isLoadingResult.value = false
   } else if (response.status === 401) {
-    isNotificationBoxVisible.value = true;
+    isNotificationBoxVisible.value = true
     // Is action determine if the value has a function that need execution or not.
     notificationInfo.value = {
-      isAction: false,
       link: '/signup',
       info: { ar: 'الرجاء تسجيل الدخول أولاً', en: 'Please sign up first' },
-    };
+    }
   } else if (response.status === 404) {
-    isNotificationBoxVisible.value = true;
+    isNotificationBoxVisible.value = true
     notificationInfo.value = {
-      isAction: false,
       link: '/test',
       info: { ar: 'الرجاء إجراء الإختبار أولاً', en: 'Please take the test first' },
-    };
+    }
   } else if (response.status === 402) {
-    isNotificationBoxVisible.value = true;
+    isNotificationBoxVisible.value = true
     notificationInfo.value = {
-      isAction: true,
-      action: async () => {
-        const res = await paymentsApi.createOrder();
-        window.location.href = res.data.url;
-      },
+      link: '/checkout-product',
       info: { ar: 'الرجاء دفع الرسوم أولاً', en: 'Please pay the fees first' },
-    };
+    }
   }
 }
 
 const resultField = computed(() => {
-  return localStorage.getItem('userLanguage') === 'ar' ? 'ar' : 'en';
-});
+  return localStorage.getItem('userLanguage') === 'ar' ? 'ar' : 'en'
+})
 
 // Check if this point has 4 sections not 3
 const hasExtraSection = computed(() => {
-  const d = description.value[resultField.value];
-  return d && d[3];
-});
+  const d = description.value[resultField.value]
+  return d && d[3]
+})
 
 function asPoints(value) {
   // Check if the value is an array then remove any falsy values and return the clean array.
-  if (Array.isArray(value)) return value.filter(Boolean);
+  if (Array.isArray(value)) return value.filter(Boolean)
   // Check if the value is a single value not an array then check if it is not empty or undefined then return it in an array.
-  if (value != null && value !== '') return [String(value)];
-  return [];
+  if (value != null && value !== '') return [String(value)]
+  return []
+}
+
+// Download the free pdf
+const downloadPdf = () => {
+  downloadFile(
+    '../../public/selfDiscoveryPlan.pdf',
+    '7-Day Plan to Discover Your Money Skills Using AI(1).pdf',
+  )
 }
 
 onMounted(async () => {
-  await loadResult();
-});
+  await loadResult()
+})
 </script>
 
 <template>
@@ -104,8 +111,11 @@ onMounted(async () => {
             {{ t(`testResult.${section.key}`) }}
           </h2>
           <ul class="result-card-points">
-            <li v-for="(point, i) in asPoints(description[resultField][section.contentKey])" :key="i"
-              class="result-card-point">
+            <li
+              v-for="(point, i) in asPoints(description[resultField][section.contentKey])"
+              :key="i"
+              class="result-card-point"
+            >
               {{ point }}
             </li>
           </ul>
@@ -114,15 +124,19 @@ onMounted(async () => {
           <p class="result-card-content">{{ description[resultField][3] }}</p>
         </section>
       </div>
+      <div class="controls">
+        <customButtonComponent
+          :content="t('testResult.downloadPdf')"
+          class="download-button"
+          @click="downloadPdf"
+        ></customButtonComponent>
+      </div>
     </template>
   </div>
 
   <div class="notification-box" v-show="isNotificationBoxVisible">
     <p>{{ notificationInfo.info[resultField] }}</p>
-    <router-link class="ok-btn" :to="notificationInfo.link" v-if="!notificationInfo.isAction">{{ t('buttons.ok')
-    }}</router-link>
-    <button class="ok-btn" @click="notificationInfo.action" v-if="notificationInfo.isAction">{{ t('buttons.ok')
-      }}</button>
+    <router-link class="ok-btn" :to="notificationInfo.link">{{ t('buttons.ok') }}</router-link>
   </div>
 </template>
 
@@ -220,12 +234,36 @@ onMounted(async () => {
   white-space: pre-wrap;
 }
 
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+}
+
+.download-button {
+  padding: 5px 25px;
+  width: 250px;
+  background-color: var(--controls-color);
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0 10px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 1px 1px 4px 0 var(--text-color);
+  transition: transform 0.15s 0 linear;
+  text-align: center;
+}
+
 /* Skeleton loading */
 .skeleton {
-  background: linear-gradient(105deg,
-      var(--placeholder-background) 0%,
-      var(--placeholder-background-content) 50%,
-      var(--placeholder-background) 100%);
+  background: linear-gradient(
+    105deg,
+    var(--placeholder-background) 0%,
+    var(--placeholder-background-content) 50%,
+    var(--placeholder-background) 100%
+  );
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.2s ease-in-out infinite;
   border-radius: 8px;
@@ -326,7 +364,9 @@ onMounted(async () => {
   color: var(--text-color);
   text-decoration: none;
   text-align: center;
-  transition: filter 0.2s, transform 0.1s;
+  transition:
+    filter 0.2s,
+    transform 0.1s;
 }
 
 .notification-box .ok-btn:hover {

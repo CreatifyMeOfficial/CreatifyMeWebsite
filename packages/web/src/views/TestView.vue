@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted, computed, watch, onUnmounted } from 'vue';
 import questionsApi from '../api/questions.js';
-import paymentsApi from '@/api/payments.js';
 import TestQuestion from '../components/testQuestion.vue';
 import createNotification from '@/notification/notification.js';
 import notificationTypes from '@/enums/notificationTypes.js';
@@ -102,9 +101,8 @@ async function submitAnswers() {
     isCalculatingResult.value = true;
     const response = await questionsApi.calculateResults({ answers: answers });
     if (response.status === 200) {
-      localStorage.removeItem('Answers');
-      const res = await paymentsApi.createOrder();
-      window.location.href = res.data.url;
+      // localStorage.removeItem('Answers');
+      router.push('/checkout-product');
     }
   } catch {
     return;
