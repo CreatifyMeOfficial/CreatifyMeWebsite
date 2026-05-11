@@ -77,7 +77,7 @@ function asPoints(value) {
 // Download the free pdf
 const downloadPdf = () => {
   downloadFile(
-    '../../public/selfDiscoveryPlan.pdf',
+    '/selfDiscoveryPlan.pdf',
     '7-Day Plan to Discover Your Money Skills Using AI(1).pdf',
   )
 }
